@@ -1,0 +1,1250 @@
+:root {
+    --primary-color: #e83e8c;
+    --secondary-color: #6f42c1;
+    --text-color: #333;
+    --bg-color: #f8f9fa;
+    --card-bg: #fff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --hover-color: #d63384;
+    --transition: all 0.3s ease;
+}
+
+.dark-mode {
+    --primary-color: #ff6b9d;
+    --secondary-color: #9c7bff;
+    --text-color: #f8f9fa;
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --hover-color: #ff4d88;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: var(--transition);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hearts Background Animation */
+.hearts-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.hearts-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(232, 62, 140, 0.1) 0%, rgba(111, 66, 193, 0.1) 100%);
+}
+
+.heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e83e8c"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+    background-size: contain;
+    opacity: 0.6;
+    animation: float 15s linear infinite;
+}
+
+.heart:nth-child(2n) {
+    animation-delay: 3s;
+    animation-duration: 20s;
+    opacity: 0.4;
+}
+
+.heart:nth-child(3n) {
+    animation-delay: 5s;
+    animation-duration: 25s;
+    opacity: 0.2;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) scale(0.5);
+    }
+    100% {
+        transform: translateY(-20vh) scale(1.2);
+    }
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    transition: var(--transition);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+.theme-toggle i {
+    font-size: 1.2rem;
+    position: absolute;
+    transition: var(--transition);
+}
+
+.theme-toggle .hidden {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-screen {
+    text-align: center;
+    animation: fadeIn 1s ease;
+}
+
+.main-screen h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px var(--shadow-color);
+}
+
+.main-screen .subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.pulse {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(232, 62, 140, 0.4);
+    position: relative;
+    overflow: hidden;
+    font-weight: 600;
+}
+
+.pulse:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-3px);
+}
+
+.pulse::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 50px;
+    z-index: -1;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(232, 62, 140, 0.7);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 15px rgba(232, 62, 140, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(232, 62, 140, 0);
+    }
+}
+
+/* Memory Box Styles */
+.memory-box {
+    display: none;
+    width: 100%;
+}
+
+.memory-box.show {
+    display: block;
+    animation: fadeInUp 0.8s ease;
+}
+
+.box-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 20px;
+}
+
+.memory-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.memory-card.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.5s ease;
+}
+
+.memory-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.memory-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.card-content {
+    padding: 25px;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.memory-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.card-subtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    opacity: 0.8;
+    font-weight: 300;
+}
+
+.card-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.card-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    z-index: 100;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-content {
+    padding: 2rem;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.close-modal:hover {
+    transform: rotate(90deg);
+    background-color: var(--hover-color);
+}
+
+.modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.modal-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Messages Modal */
+.message-container {
+    margin-top: 2rem;
+}
+
+.message {
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 3px 10px var(--shadow-color);
+}
+
+.message h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.message-date {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.message-content {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.reactions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.reaction-btn {
+    background-color: var(--bg-color);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.reaction-btn:hover {
+    transform: scale(1.2);
+}
+
+/* Music Modal */
+.music-player {
+    margin-top: 2rem;
+}
+
+.song {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.song:hover {
+    transform: translateX(5px);
+}
+
+.song-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+    color: var(--primary-color);
+}
+
+.song-info p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.play-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.play-btn:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.1);
+}
+
+.choose-btn {
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.choose-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.youtube-player {
+    margin-top: 2rem;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Moments Modal */
+.calendar-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .calendar-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.calendar {
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 3px 10px var(--shadow-color);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-header button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.calendar-header button:hover {
+    background-color: var(--hover-color);
+}
+
+.month-year {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.calendar-day:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.calendar-day.empty {
+    visibility: hidden;
+}
+
+.calendar-day.today {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
+.calendar-day.has-memory::after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    margin: 0.2rem auto 0;
+}
+
+.memory-input {
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 10px var(--shadow-color);
+}
+
+.memory-input h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.memory-input input[type="date"],
+.memory-input textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-family: inherit;
+}
+
+.memory-input textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.save-memory {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    width: 100%;
+}
+
+.save-memory:hover {
+    background-color: var(--hover-color);
+}
+
+.memories-gallery {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.memory-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px var(--shadow-color);
+}
+
+.memory-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.memory-item:hover img {
+    transform: scale(1.05);
+}
+
+.memory-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    color: white;
+    padding: 1rem;
+}
+
+.memory-caption h4 {
+    margin-bottom: 0.3rem;
+}
+
+.memory-caption p {
+    font-size: 0.9rem;
+}
+
+/* Spotify Modal */
+.playlists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.playlist-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px var(--shadow-color);
+    transition: var(--transition);
+}
+
+.playlist-card:hover {
+    transform: translateY(-5px);
+}
+
+.playlist-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.playlist-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.playlist-card:hover .playlist-overlay {
+    opacity: 1;
+}
+
+.play-playlist {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.play-playlist:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+}
+
+.playlist-card .reactions {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.playlists-grid {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.playlist-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.playlist-image-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.playlist-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.play-playlist {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #1DB954;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play-playlist:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.play-icon {
+    margin-left: 3px;
+}
+
+.playlist-image-container:hover .play-playlist {
+    opacity: 1;
+}
+
+.reactions {
+    display: flex;
+    gap: 15px;
+}
+
+.reaction-btn {
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+
+.reaction-btn:hover {
+    transform: scale(1.2);
+}
+
+.playlist-cover {
+    transition: transform 0.3s;
+}
+.playlist-cover:hover {
+    transform: scale(1.05);
+}
+@media (max-width: 600px) {
+    .playlists-grid {
+        flex-direction: column;
+    }
+}
+/* Adventures Modal */
+.hq-carousel {
+    position: relative;
+    margin-top: 2rem;
+}
+
+.hq-container {
+    display: flex;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.hq-slide {
+    min-width: 100%;
+    transition: transform 0.5s ease;
+    position: relative;
+}
+
+.hq-slide img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.hq-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: 1.5rem;
+}
+
+.hq-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: var(--transition);
+}
+
+.carousel-btn:hover {
+    background-color: var(--hover-color);
+}
+
+.prev-btn {
+    left: 20px;
+}
+
+.next-btn {
+    right: 20px;
+}
+
+/* Games Modal */
+.games-tabs {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    opacity: 0.7;
+    transition: var(--transition);
+    position: relative;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.tab-btn.active {
+    opacity: 1;
+    color: var(--primary-color);
+}
+
+.tab-btn.active::after {
+    width: 100%;
+}
+
+.tab-content {
+    display: none;
+    padding: 2rem 0;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Hangman Game */
+.hangman-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.hangman-drawing {
+    position: relative;
+    width: 200px;
+    height: 250px;
+}
+
+.hangman-part {
+    position: absolute;
+    background-color: var(--text-color);
+}
+
+.hangman-part.base {
+    width: 150px;
+    height: 10px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hangman-part.pole {
+    width: 10px;
+    height: 200px;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hangman-part.top {
+    width: 100px;
+    height: 10px;
+    top: 0;
+    left: 50%;
+}
+
+.hangman-part.rope {
+    width: 5px;
+    height: 30px;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hangman-part.head {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid var(--text-color);
+    background-color: transparent;
+}
+
+.hangman-part.body {
+    width: 5px;
+    height: 80px;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hangman-part.left-arm {
+    width: 50px;
+    height: 5px;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-100%) rotate(30deg);
+    transform-origin: right center;
+}
+
+.hangman-part.right-arm {
+    width: 50px;
+    height: 5px;
+    top: 110px;
+    left: 50%;
+    transform: translateX(0) rotate(-30deg);
+    transform-origin: left center;
+}
+
+.hangman-part.left-leg {
+    width: 50px;
+    height: 5px;
+    top: 155px;
+    left: 50%;
+    transform: translateX(-100%) rotate(-30deg);
+    transform-origin: right center;
+}
+
+.hangman-part.right-leg {
+    width: 50px;
+    height: 5px;
+    top: 155px;
+    left: 50%;
+    transform: translateX(0) rotate(30deg);
+    transform-origin: left center;
+}
+
+.word-display {
+    display: flex;
+    gap: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+    margin: 1rem 0;
+}
+
+.letter {
+    width: 30px;
+    text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.key {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.key:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.key.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.hangman-status {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.new-game {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+.new-game:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+}
+
+/* Online Games */
+.online-games {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.online-game {
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 10px var(--shadow-color);
+    text-align: center;
+}
+
+.online-game h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.online-game p {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.play-online {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.play-online:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-screen h1 {
+        font-size: 2.5rem;
+    }
+    
+    .main-screen .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .box-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal {
+        width: 95%;
+        padding: 1rem;
+    }
+    
+    .hq-info h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .box-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-screen h1 {
+        font-size: 2rem;
+    }
+    
+    .memory-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .modal h2 {
+        font-size: 1.8rem;
+    }
+    
+    .playlists-grid {
+        grid-template-columns: 1fr;
+    }
+}

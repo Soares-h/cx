@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Minha Fedorenta ❤️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body class="dark-mode">
+    <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun hidden"></i>
+    </div>
+    
+    <div class="hearts-background"></div>
+    
+    <main class="container">
+        <!-- TELA PRINCIPAL -->
+        <div class="main-screen" id="mainScreen">
+            <h1>Para FEDORENTA</h1>
+            <p class="subtitle">Feito com todo o meu coração</p>
+            <button class="pulse" id="openBoxBtn">Abrir Caixa da Saudade</button>
+        </div>
+        
+        <!-- SEGUNDA TELA -->
+        <div class="memory-box" id="memoryBox">
+            <div class="box-grid">
+                <!-- Mensagens -->
+                <div class="memory-card" id="messagesCard">
+                    <div class="card-content">
+                        <h2>Mensagens</h2>
+                        <p class="card-subtitle">Palavras que guardo para você</p>
+                        <button class="card-btn">Abrir</button>
+                    </div>
+                </div>
+                
+                <!-- Vamos Bailar? -->
+                <div class="memory-card" id="danceCard">
+                    <div class="card-content">
+                        <h2>Vamos bailar?</h2>
+                        <p class="card-subtitle">E então ...</p>
+                        <button class="card-btn">Abrir</button>
+                    </div>
+                </div>
+                
+                <!-- Nossos Momentos -->
+                <div class="memory-card" id="momentsCard">
+                    <div class="card-content">
+                        <h2>Nossos momentos</h2>
+                        <p class="card-subtitle">Memórias que construiremos juntas</p>
+                        <button class="card-btn">Abrir</button>
+                    </div>
+                </div>
+                
+                <!-- Spotify -->
+                <div class="memory-card" id="spotifyCard">
+                    <div class="card-content">
+                        <h2>Spotify</h2>
+                        <p class="card-subtitle">Playlists para cada momento</p>
+                        <button class="card-btn">Abrir</button>
+                    </div>
+                </div>
+                
+                <!-- Aventuras Criadas -->
+                <div class="memory-card" id="adventuresCard">
+                    <div class="card-content">
+                        <h2>Aventuras criadas</h2>
+                        <p class="card-subtitle">Para você rir, sorrir</p>
+                        <button class="card-btn">Abrir</button>
+                    </div>
+                </div>
+                
+                <!-- Jogos -->
+                <div class="memory-card" id="gamesCard">
+                    <div class="card-content">
+                        <h2>Jogos</h2>
+                        <p class="card-subtitle">Para nos divertirmos juntas</p>
+                        <button class="card-btn">Abrir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- MODAL MENSAGENS -->
+    <div class="modal hidden" id="messagesModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Mensagens para você</h2>
+            <p class="modal-subtitle">Cada palavra foi pensada com muito carinho</p>
+                    </div>
+                    <div class="message-body">
+                        <h5>💌 JULHO <span class="message-date">2025</span></h5>
+                        <p><h4>MEU AMOR, MINHA PAIXÃO</p></h4>
+                        <p style="text-align: justify;">Você é o meu primeiro e único amor, e mesmo depois de longos anos, ainda me pego olhando para você e me perguntando como fui tão abençoada por te encontrar.</p>
+                        <p style="text-align: justify;">A gente tem uma conexão que só nós entendemos. Você tem o mesmo senso de humor que eu, e isso faz tudo ser leve. Eu te admiro tanto, Eris.</p>
+                        <p style="text-align: justify;">Hoje, só quero te dizer que... Vou escolher você todos os dias. Vou te amar com leveza nos dias bons e com força nos dias ruins.<br>Vou regar o nosso amor todos os dias, como quem cuida do que tem de mais precioso no mundo.<br>
+                          Prometo ser teu abrigo... teu protetor, tua paz. Porque eu nasci para estar com você!<br> E sou grata a Deus por ter cruzado meu caminho com o teu.</p>
+                        <p style="text-align: center;"><strong>Te amo infinitamente, FEDORENTA!</p></strong>
+                    </div>
+
+                    <div class="reactions">
+                        <span class="reaction-btn" data-reaction="❤️">❤️</span>
+                        <span class="reaction-btn" data-reaction="😊">😊</span>
+                        <span class="reaction-btn" data-reaction="😍">😍</span>
+                        <span class="reaction-btn" data-reaction="🥰">🥰</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL MÚSICAS -->
+    <div class="modal hidden" id="danceModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>... Me concede essa dança?</h2>
+            
+            <div class="music-player">
+                <div class="song">
+                    <div class="song-info">
+                        <h3>GO BABY</h3>
+                        <p>Justin Bieber</p>
+                    </div>
+                    <div class="player-controls">
+                        <button class="play-btn" data-youtube="https://www.youtube.com/embed/GEhLQF3Y7ws?si=8hFHOnIxS_Dm9APZ">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="youtube-player hidden" id="youtubePlayer">
+                <iframe width="100%" height="200" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL MOMENTOS -->
+    <div class="modal hidden" id="momentsModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Nossos momentos</h2>
+            <p class="modal-subtitle">Cada instante ao seu lado é especial</p>
+            
+            <div class="calendar-container">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button class="prev-month"><i class="fas fa-chevron-left"></i></button>
+                        <h3 class="month-year">Julho 2025</h3>
+                        <button class="next-month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-grid"></div>
+                </div>
+                
+                <div class="memory-input">
+                    <h3>Adicionar memória</h3>
+                    <input type="date" id="memoryDate">
+                    <textarea placeholder="Escreva sobre este momento especial..."></textarea>
+                    <input type="file" id="memoryImage" accept="image/*">
+                    <button class="save-memory">Salvar</button>
+                </div>
+            </div>
+            
+            <div class="memories-gallery">
+                <div class="memory-item">
+                    <img src="https://via.placeholder.com/300x200?text=Nossa+Primeira+Viagem" alt="Memória">
+                    <div class="memory-caption">
+                        <h4>10/06/2025</h4>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL SPOTIFY -->
+    <div class="modal hidden" id="spotifyModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Nossas playlists</h2>
+            <p class="modal-subtitle">Tudo depende do momento</p>
+        
+            <div class="playlists-grid">
+                <div class="playlist-card">
+                    <div class="playlist-image-container">
+                        <img src="assets/images/image1.png" alt="Playlist 1" class="playlist-cover">
+                        <button class="play-playlist" data-spotify="5s9MMZSW7BKwH47mikWoXb">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="reactions">
+                        <span class="reaction-btn" data-reaction="❤️">❤️</span>
+                        <span class="reaction-btn" data-reaction="🎵">🎵</span>
+                    </div>
+                </div>
+            
+                <div class="playlist-card">
+                    <div class="playlist-image-container">
+                        <img src="assets/images/image2.png" alt="Playlist 2" class="playlist-cover">
+                        <button class="play-playlist" data-spotify="3IXW2e8YXoZ6CJQgkg04Er">
+                            <span class="play-icon">▶</span>
+                        </button>
+                    </div>
+                    <div class="reactions">
+                        <span class="reaction-btn" data-reaction="❤️">❤️</span>
+                        <span class="reaction-btn" data-reaction="🎵">🎵</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL AVENTURAS -->
+    <div class="modal hidden" id="adventuresModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Aventuras criadas</h2>
+            <p class="modal-subtitle">Histórias para te arrancar sorrisos</p>
+            
+            <div class="hq-carousel">
+                <button class="carousel-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                
+                <div class="hq-container">
+                    <div class="hq-slide active">
+                        <img src="https://via.placeholder.com/600x400?text=HQ+1" alt="HQ 1">
+                        <div class="hq-info">
+                            <h3>Nosso primeiro encontro</h3>
+                            <p>Como tudo começou...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hq-slide">
+                        <img src="https://via.placeholder.com/600x400?text=HQ+2" alt="HQ 2">
+                        <div class="hq-info">
+                            <h3>O dia do beijo</h3>
+                            <p>Quando nossos corações bateram mais forte...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="reactions">
+                <span class="reaction-btn" data-reaction="❤️">❤️</span>
+                <span class="reaction-btn" data-reaction="😍">😍</span>
+                <span class="reaction-btn" data-reaction="😂">😂</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL JOGOS -->
+    <div class="modal hidden" id="gamesModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            
+            <div class="games-tabs">
+                <button class="tab-btn" data-tab="online">Jogos Online</button>
+            </div>
+            <div class="tab-content" id="online">
+                <div class="online-games">
+                    <div class="online-game">
+                        <h3>Paciência</h3>
+                        <p>Jogue um jogo de paciência enquanto pensa em mim</p>
+                        <button class="play-online" data-url="https://www.solitaire.org/">Jogar</button>
+                    </div>
+                    
+                    <div class="online-game">
+                        <h3>Palavras Cruzadas</h3>
+                        <p>Desafie seu vocabulário</p>
+                        <button class="play-online" data-url="https://www.nytimes.com/crosswords">Jogar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="overlay hidden"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
