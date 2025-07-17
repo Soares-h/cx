@@ -843,10 +843,12 @@ body {
         flex-direction: column;
     }
 }
-/* Adventures Modal */
+/* Adventures Modal - Versão Otimizada */
 .hq-carousel {
     position: relative;
-    margin-top: 2rem;
+    margin: 2rem auto;
+    max-width: 800px;
+    width: 95%;
 }
 
 .hq-container {
@@ -854,32 +856,40 @@ body {
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 5px 15px var(--shadow-color);
+    background: #f0f0f0;
+    max-height: 70vh; /* Altura máxima controlada */
+    touch-action: pan-y;
 }
 
 .hq-slide {
     min-width: 100%;
     transition: transform 0.5s ease;
     position: relative;
+    display: flex;
+    flex-direction: column; /* Organiza conteúdo verticalmente */
 }
 
 .hq-slide img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
+    width: auto; /* Largura automática */
+    max-width: 100%; /* Não ultrapassa o container */
+    height: auto;
+    max-height: calc(70vh - 80px); /* Reserva espaço para o texto */
+    margin: 0 auto; /* Centraliza horizontalmente */
+    object-fit: contain;
+    object-position: top; /* Alinha no topo */
 }
 
 .hq-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
     color: white;
-    padding: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto; /* Gruda no fundo */
 }
 
 .hq-info h3 {
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 2vw, 1.8rem); /* Tamanho responsivo */
     margin-bottom: 0.5rem;
 }
 
@@ -887,28 +897,68 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-color: var(--primary-color);
     color: white;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1rem;
     cursor: pointer;
     z-index: 10;
     transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .carousel-btn:hover {
     background-color: var(--hover-color);
+    transform: translateY(-50%) scale(1.1);
 }
 
 .prev-btn {
-    left: 20px;
+    left: 10px;
 }
 
 .next-btn {
-    right: 20px;
+    right: 10px;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    .hq-container {
+        max-height: 60vh;
+    }
+    
+    .hq-slide img {
+        max-height: calc(60vh - 70px);
+    }
+    
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hq-container {
+        max-height: 50vh;
+    }
+    
+    .hq-slide img {
+        max-height: calc(50vh - 60px);
+    }
+    
+    .hq-info {
+        padding: 0.8rem;
+    }
+    
+    .carousel-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
 }
 
 /* Games Modal */
