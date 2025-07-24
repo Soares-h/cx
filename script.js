@@ -209,26 +209,66 @@ console.log("%c💖 Como deseja aproveitar o momento, meu amor?", "font-size: 16
         renderCalendar();
     });
     
-    // 7. HQ Carousel
-    const hqContainer = document.querySelector('.hq-container');
-    const prevHQBtn = document.querySelector('.prev-btn');
-    const nextHQBtn = document.querySelector('.next-btn');
-    const hqSlides = document.querySelectorAll('.hq-slide');
-    let currentHQIndex = 0;
+// 7. HQ Carousel
+const hqContainer = document.querySelector('.hq-container');
+const prevHQBtn = document.querySelector('.prev-btn');
+const nextHQBtn = document.querySelector('.next-btn');
+const hqSlides = document.querySelectorAll('.hq-slide');
+let currentHQIndex = 0;
+let startX, moveX; // Variáveis para controle do touch
+
+// Função principal de atualização
+function updateHQCarousel() {
+    hqContainer.style.transform = `translateX(-${currentHQIndex * 100}%)`;
+    hqContainer.style.transition = 'transform 0.5s ease'; // Adiciona transição suave
+}
+
+// Navegação por botões
+prevHQBtn.addEventListener('click', () => {
+    currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
+    updateHQCarousel();
+});
+
+nextHQBtn.addEventListener('click', () => {
+    currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
+    updateHQCarousel();
+});
+
+// Controle por Toque (Swipe)
+hqContainer.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    hqContainer.style.transition = 'none'; // Remove transição durante o swipe
+}, {passive: true});
+
+hqContainer.addEventListener('touchmove', (e) => {
+    if (!startX) return;
+    moveX = e.touches[0].clientX;
+    const diff = moveX - startX;
+    hqContainer.style.transform = `translateX(calc(-${currentHQIndex * 100}% + ${diff}px)`;
+}, {passive: true});
+
+hqContainer.addEventListener('touchend', () => {
+    if (!startX || !moveX) return;
     
-    function updateHQCarousel() {
-        hqContainer.style.transform = `translateX(-${currentHQIndex * 100}%)`;
+    const threshold = 50; // Sensibilidade do swipe
+    const diff = moveX - startX;
+    
+    // Swipe para esquerda (avançar)
+    if (diff < -threshold) {
+        currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
+    } 
+    // Swipe para direita (voltar)
+    else if (diff > threshold) {
+        currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
     }
     
-    prevHQBtn.addEventListener('click', () => {
-        currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
-        updateHQCarousel();
-    });
-    
-    nextHQBtn.addEventListener('click', () => {
-        currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
-        updateHQCarousel();
-    });
+    updateHQCarousel();
+    startX = null;
+    moveX = null;
+});
+
+// Inicialização
+updateHQCarousel();
     
     // 8. Games Tabs
     const tabButtons = document.querySelectorAll('.tab-btn');
