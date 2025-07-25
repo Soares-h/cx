@@ -305,6 +305,15 @@ function applyMobileStyles() {
 // Aplica ao carregar e redimensionar
 window.addEventListener('load', applyMobileStyles);
 window.addEventListener('resize', applyMobileStyles);
+// Otimização para mobile
+if (window.innerWidth <= 768) {
+  const hqSlides = document.querySelectorAll('.hq-slide');
+  
+  hqSlides.forEach(slide => {
+    slide.style.flexShrink = '0';
+    slide.style.minWidth = '100%';
+  });
+}
     
     // 8. Games Tabs
     const tabButtons = document.querySelectorAll('.tab-btn');

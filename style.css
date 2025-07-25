@@ -949,41 +949,44 @@ body:not(.dark-mode) .hq-slide img {
   transform: translateY(-50%) scale(1.1);
 }
 
-/* ===== REGRAS QUE SÓ ATIVAM NO CELULAR ===== */
+/* ===== CORREÇÕES URGENTES PARA MOBILE ===== */
 @media (max-width: 768px) {
-  .mobile-version {
-    width: 100vw !important;
-    margin-left: calc(-50vw + 50%) !important;
+  /* Contêiner principal */
+  .hq-carousel {
+    max-height: 80vh !important;
     overflow: hidden !important;
+    margin: 0 auto !important;
   }
 
-  .mobile-version .hq-container {
-    height: 70vh !important;
-    align-items: center !important;
+  /* Imagens proporcionalmente redimensionadas */
+  .hq-slide img {
+    max-height: 50vh !important;
+    width: auto !important;
+    object-fit: contain !important;
+    margin: 0 auto 1rem !important;
+    border: 2px solid #000 !important;
   }
 
-  .mobile-version .hq-slide {
-    min-width: 100% !important;
-    padding: 0 5% !important;
+  /* Textos legíveis e alinhados */
+  .hq-slide h1, 
+  .hq-slide h2, 
+  .hq-slide h3 {
+    font-size: clamp(1rem, 4vw, 1.5rem) !important;
+    line-height: 1.3 !important;
+    margin: 0.5rem auto !important;
+    text-align: center !important;
+    white-space: normal !important; /* Permite quebra de linha */
+    padding: 0 1rem !important;
   }
 
-  /* Textos (como na sua imagem de referência) */
-  .mobile-version .hq-slide h1 {
-    font-size: 1.5rem !important;
-    white-space: nowrap !important;
-    margin: 0 0 0.5rem 0 !important;
-  }
-
-  /* Botões nas bordas extremas */
-  .mobile-version .carousel-btn {
-    position: fixed !important;
+  /* Botões de navegação visíveis */
+  .carousel-btn {
     width: 30px !important;
-    height: 60px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    height: 50px !important;
+    background: rgba(0,0,0,0.7) !important;
   }
-  .mobile-version .prev-btn { left: 0 !important; }
-  .mobile-version .next-btn { right: 0 !important; }
+  .prev-btn { left: 5px !important; }
+  .next-btn { right: 5px !important; }
 }
 
 /* Games Modal */
