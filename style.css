@@ -844,121 +844,98 @@ body {
     }
 }
 /* Adventures Modal - Versão Otimizada */
+/* Estrutura Principal */
 .hq-carousel {
     position: relative;
     margin: 2rem auto;
     max-width: 800px;
     width: 95%;
+    overflow: hidden; /* Novo */
 }
 
 .hq-container {
     display: flex;
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px var(--shadow-color);
-    background: #f0f0f0;
-    max-height: 70vh; /* Altura máxima controlada */
-    touch-action: pan-y;
+    width: 100%;
+    min-height: 400px; /* Altura mínima garantida */
+    padding: 5px; /* Espaçamento extra */
 }
 
 .hq-slide {
     min-width: 100%;
-    transition: transform 0.5s ease;
+    flex-shrink: 0;
     position: relative;
     display: flex;
-    flex-direction: column; /* Organiza conteúdo verticalmente */
+    flex-direction: column;
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    background-color: transparent !important; /* Remove fundo colorido */
 }
 
+/* Imagens - Correção Crucial */
 .hq-slide img {
-    width: auto; /* Largura automática */
-    max-width: 100%; /* Não ultrapassa o container */
+    max-width: 100%;
+    max-height: 65vh;
+    width: auto;
     height: auto;
-    max-height: calc(70vh - 80px); /* Reserva espaço para o texto */
-    margin: 0 auto; /* Centraliza horizontalmente */
+    display: block;
     object-fit: contain;
-    object-position: top; /* Alinha no topo */
+    object-position: center;
+    margin: 0 auto;
+    border: 4px solid; /* Espessura da borda */
+    padding: 8px; /* Espaçamento interno */
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
-.hq-info {
-    width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    margin-top: auto; /* Gruda no fundo */
+/* Modo Escuro - Borda branca */
+body.dark-mode .hq-slide img {
+    border-color: white !important;
+    background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
 }
 
-.hq-info h3 {
-    font-size: clamp(1.2rem, 2vw, 1.8rem); /* Tamanho responsivo */
-    margin-bottom: 0.5rem;
+/* Modo Claro - Borda preta */
+body:not(.dark-mode) .hq-slide img {
+    border-color: black !important;
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
+.hq-slide:nth-child(2) img {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.95; }
+    50% { opacity: 1; }
+    100% { opacity: 0.95; }
+}
+
+/* Restauração dos botões */
 .carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-    z-index: 10;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.carousel-btn:hover {
-    background-color: var(--hover-color);
-    transform: translateY(-50%) scale(1.1);
+  /* Estilo original (ajuste conforme seu projeto) */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color); /* Cor original */
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .prev-btn {
-    left: 10px;
+    left: 15px;
 }
 
 .next-btn {
-    right: 10px;
-}
-
-/* Media Queries para Responsividade */
-@media (max-width: 768px) {
-    .hq-container {
-        max-height: 60vh;
-    }
-    
-    .hq-slide img {
-        max-height: calc(60vh - 70px);
-    }
-    
-    .carousel-btn {
-        width: 35px;
-        height: 35px;
-    }
-}
-
-@media (max-width: 480px) {
-    .hq-container {
-        max-height: 50vh;
-    }
-    
-    .hq-slide img {
-        max-height: calc(50vh - 60px);
-    }
-    
-    .hq-info {
-        padding: 0.8rem;
-    }
-    
-    .carousel-btn {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8rem;
-    }
+    right: 15px;
 }
 
 /* Games Modal */
