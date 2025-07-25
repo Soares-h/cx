@@ -267,21 +267,6 @@ hqContainer.addEventListener('touchend', () => {
     moveX = null;
 });
 
-// Observador de mudança de tema
-const observer = new MutationObserver(() => {
-  const images = document.querySelectorAll('.hq-slide img');
-  const isDark = document.body.classList.contains('dark-mode');
-  
-  images.forEach(img => {
-    img.style.borderColor = isDark ? 'white' : 'black';
-  });
-});
-
-observer.observe(document.body, {
-  attributes: true,
-  attributeFilter: ['class']
-});
-
 // Inicialização
 updateHQCarousel();
     

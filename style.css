@@ -916,7 +916,6 @@ body {
     overflow: visible !important; /* Permite que bordas saiam da área */
   }
 }
-
 body.dark-mode .hq-slide img {
   border-color: white !important;
   background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
