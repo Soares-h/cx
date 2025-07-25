@@ -892,30 +892,39 @@ body {
   /* 1. Corrige textos quebrados */
   .hq-slide h1, .hq-slide h2 {
     white-space: nowrap; /* Impede quebra de linha */
-    font-size: 1.5rem; /* Tamanho menor se necessário */
+    font-size: 1.2rem; /* Tamanho menor se necessário */
     text-align: center;
     margin: 0.5rem 0;
+    padding: 0 10px;
   }
 
   /* 2. Ajusta bordas das imagens */
   .hq-slide img {
-    max-height: 50vh !important; /* Altura menor */
-    border-width: 2px !important; /* Borda mais fina */
-    padding: 3px !important; /* Reduz espaçamento interno */
+    max-height: 50vh; /* Altura menor */
+    border-width: 2px; /* Borda mais fina */
+    padding: 3px; /* Reduz espaçamento interno */
+  }
+
+  .prev-btn {
+    left: 5px;
+  }
+  .next-btn {
+    right: 5px;
   }
 
   /* 3. Centraliza conteúdo verticalmente */
   .hq-container {
-    min-height: 300px !important;
-    padding: 10px 0 !important;
+    min-height: 300px;
+    padding: 10px 0;
   }
 
   /* 4. Corrige margens para evitar cortes */
   .hq-carousel {
-    margin: 1rem auto !important;
-    overflow: visible !important; /* Permite que bordas saiam da área */
+    margin: 1rem auto;
+    overflow: visible; /* Permite que bordas saiam da área */
   }
 }
+
 body.dark-mode .hq-slide img {
   border-color: white !important;
   background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
