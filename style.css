@@ -847,9 +847,9 @@ body {
 /* Estrutura Principal */
 .hq-carousel {
     position: relative;
-    margin: 2rem auto;
+    margin: 0 auto;
     max-width: 800px;
-    width: 95%;
+    width: 100%;
     overflow: hidden; /* Novo */
 }
 
@@ -858,11 +858,14 @@ body {
     width: 100%;
     min-height: 400px; /* Altura mínima garantida */
     padding: 5px; /* Espaçamento extra */
+    transition: transform 0.5s ease;
 }
 
 .hq-slide {
     min-width: 100%;
     flex-shrink: 0;
+    padding: 0 20px;
+    box-sizing: border-box;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -887,12 +890,54 @@ body {
     transition: border-color 0.3s ease;
 }
 
+/* Restauração dos botões */
+.carousel-btn {
+  /* Estilo original (ajuste conforme seu projeto) */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--primary-color); /* Cor original */
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+  right: 10px;
+}
+
+/* Setas (Font Awesome) */
+.carousel-btn i {
+  color: white;
+  font-size: 1.2rem;
+}
+
+/* Efeito hover */
+.carousel-btn:hover {
+  background-color: var(--hover-color); /* Cor secundária (ex: #1ED760) */
+  transform: translateY(-50%) scale(1.1);
+}
+
 /* ===== AJUSTES PARA CELULAR ===== */
 @media (max-width: 768px) {
   /* 1. Corrige textos quebrados */
   .hq-slide h1, .hq-slide h2 {
-    white-space: nowrap; /* Impede quebra de linha */
-    font-size: 1.2rem; /* Tamanho menor se necessário */
+    white-space: nowrap !important; /* Impede quebra de linha */
+    font-size: 1.3rem !important; /* Tamanho menor se necessário */
     text-align: center;
     margin: 0.5rem 0;
     padding: 0 10px;
@@ -906,22 +951,28 @@ body {
   }
 
   .prev-btn {
-    left: 5px;
+    left: -5p !important;
   }
   .next-btn {
-    right: 5px;
+    right: -5px !important;
+  }
+
+  .hq-slide {
+    min-width: 100% !important;
+    flex-shrink: 0 !important;
+    padding: 0 10px !important; /* Espaçamento entre slides */
   }
 
   /* 3. Centraliza conteúdo verticalmente */
   .hq-container {
     min-height: 300px;
     padding: 10px 0;
+    transform: translateX(0) !important; /* Remove deslocamento indesejado */
   }
 
   /* 4. Corrige margens para evitar cortes */
   .hq-carousel {
-    margin: 1rem auto;
-    overflow: visible; /* Permite que bordas saiam da área */
+    overflow: hidden !important; /* Permite que bordas saiam da área */
   }
 }
 
@@ -944,47 +995,6 @@ body:not(.dark-mode) .hq-slide img {
     0% { opacity: 0.95; }
     50% { opacity: 1; }
     100% { opacity: 0.95; }
-}
-
-/* Restauração dos botões */
-.carousel-btn {
-  /* Estilo original (ajuste conforme seu projeto) */
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--primary-color); /* Cor original */
-  color: white;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.prev-btn {
-    left: 15px;
-}
-
-.next-btn {
-  right: 15px;
-}
-
-/* Setas (Font Awesome) */
-.carousel-btn i {
-  color: white !important;
-  font-size: 1.2rem;
-}
-
-/* Efeito hover */
-.carousel-btn:hover {
-  background-color: var(--hover-color); /* Cor secundária (ex: #1ED760) */
-  transform: translateY(-50%) scale(1.1);
 }
 
 /* Games Modal */

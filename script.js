@@ -267,6 +267,19 @@ hqContainer.addEventListener('touchend', () => {
     moveX = null;
 });
 
+function moveSlide(direction) {
+  if (window.innerWidth <= 768) { // Só aplica no celular
+    const container = document.querySelector('.hq-container');
+    const currentTransform = parseInt(container.style.transform.replace('translateX(', '').replace('%)', '')) || 0;
+    const newTransform = currentTransform + (direction * -100);
+    
+    // Limita o movimento aos slides existentes
+    if (newTransform <= 0 && newTransform >= -((totalSlides - 1) * 100)) {
+      container.style.transform = `translateX(${newTransform}%)`;
+    }
+  }
+}
+
 // Inicialização
 updateHQCarousel();
     
