@@ -847,9 +847,9 @@ body {
 /* Estrutura Principal */
 .hq-carousel {
     position: relative;
-    margin: 0 auto;
+    margin: 2rem auto;
     max-width: 800px;
-    width: 100%;
+    width: 95%;
     overflow: hidden; /* Novo */
 }
 
@@ -858,20 +858,17 @@ body {
     width: 100%;
     min-height: 400px; /* Altura mínima garantida */
     padding: 5px; /* Espaçamento extra */
-    transition: transform 0.5s ease;
 }
 
 .hq-slide {
     min-width: 100%;
     flex-shrink: 0;
-    padding: 0 20px;
-    box-sizing: border-box;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center; /* Centraliza horizontalmente */
     justify-content: center; /* Centraliza verticalmente */
-    background-color: transparent !important; /* Remove fundo colorido */
+    background-color: transparent; /* Remove fundo colorido */
 }
 
 /* Imagens - Correção Crucial */
@@ -890,6 +887,27 @@ body {
     transition: border-color 0.3s ease;
 }
 
+body.dark-mode .hq-slide img {
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
+}
+
+/* Modo Claro - Borda preta */
+body:not(.dark-mode) .hq-slide img {
+  border-color: black;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.hq-slide:nth-child(2) img {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.95; }
+    50% { opacity: 1; }
+    100% { opacity: 0.95; }
+}
+
 /* Restauração dos botões */
 .carousel-btn {
   /* Estilo original (ajuste conforme seu projeto) */
@@ -898,7 +916,6 @@ body {
   transform: translateY(-50%);
   width: 40px;
   height: 40px;
-  border: none;
   border-radius: 50%;
   background-color: var(--primary-color); /* Cor original */
   color: white;
@@ -913,11 +930,11 @@ body {
 }
 
 .prev-btn {
-    left: 10px;
+    left: 15px;
 }
 
 .next-btn {
-  right: 10px;
+  right: 15px;
 }
 
 /* Setas (Font Awesome) */
@@ -932,69 +949,41 @@ body {
   transform: translateY(-50%) scale(1.1);
 }
 
-/* ===== AJUSTES PARA CELULAR ===== */
+/* ===== REGRAS QUE SÓ ATIVAM NO CELULAR ===== */
 @media (max-width: 768px) {
-  /* 1. Corrige textos quebrados */
-  .hq-slide h1, .hq-slide h2 {
-    white-space: nowrap !important; /* Impede quebra de linha */
-    font-size: 1.3rem !important; /* Tamanho menor se necessário */
-    text-align: center;
-    margin: 0.5rem 0;
-    padding: 0 10px;
+  .mobile-version {
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    overflow: hidden !important;
   }
 
-  /* 2. Ajusta bordas das imagens */
-  .hq-slide img {
-    max-height: 50vh; /* Altura menor */
-    border-width: 2px; /* Borda mais fina */
-    padding: 3px; /* Reduz espaçamento interno */
+  .mobile-version .hq-container {
+    height: 70vh !important;
+    align-items: center !important;
   }
 
-  .prev-btn {
-    left: -5p !important;
-  }
-  .next-btn {
-    right: -5px !important;
-  }
-
-  .hq-slide {
+  .mobile-version .hq-slide {
     min-width: 100% !important;
-    flex-shrink: 0 !important;
-    padding: 0 10px !important; /* Espaçamento entre slides */
+    padding: 0 5% !important;
   }
 
-  /* 3. Centraliza conteúdo verticalmente */
-  .hq-container {
-    min-height: 300px;
-    padding: 10px 0;
-    transform: translateX(0) !important; /* Remove deslocamento indesejado */
+  /* Textos (como na sua imagem de referência) */
+  .mobile-version .hq-slide h1 {
+    font-size: 1.5rem !important;
+    white-space: nowrap !important;
+    margin: 0 0 0.5rem 0 !important;
   }
 
-  /* 4. Corrige margens para evitar cortes */
-  .hq-carousel {
-    overflow: hidden !important; /* Permite que bordas saiam da área */
+  /* Botões nas bordas extremas */
+  .mobile-version .carousel-btn {
+    position: fixed !important;
+    width: 30px !important;
+    height: 60px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
   }
-}
-
-body.dark-mode .hq-slide img {
-  border-color: white !important;
-  background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
-}
-
-/* Modo Claro - Borda preta */
-body:not(.dark-mode) .hq-slide img {
-  border-color: black !important;
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.hq-slide:nth-child(2) img {
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 0.95; }
-    50% { opacity: 1; }
-    100% { opacity: 0.95; }
+  .mobile-version .prev-btn { left: 0 !important; }
+  .mobile-version .next-btn { right: 0 !important; }
 }
 
 /* Games Modal */

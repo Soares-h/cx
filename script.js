@@ -267,21 +267,44 @@ hqContainer.addEventListener('touchend', () => {
     moveX = null;
 });
 
-function moveSlide(direction) {
-  if (window.innerWidth <= 768) { // Só aplica no celular
-    const container = document.querySelector('.hq-container');
-    const currentTransform = parseInt(container.style.transform.replace('translateX(', '').replace('%)', '')) || 0;
-    const newTransform = currentTransform + (direction * -100);
-    
-    // Limita o movimento aos slides existentes
-    if (newTransform <= 0 && newTransform >= -((totalSlides - 1) * 100)) {
-      container.style.transform = `translateX(${newTransform}%)`;
-    }
-  }
-}
-
 // Inicialização
 updateHQCarousel();
+
+// ===== MODIFICAÇÕES EXCLUSIVAS PARA MOBILE =====
+function isMobile() {
+  return window.innerWidth <= 768;
+}
+
+function applyMobileStyles() {
+  if (!isMobile()) return;
+  
+  // 1. Adiciona a classe mobile ao carrossel
+  document.querySelector('.hq-carousel').classList.add('mobile-version');
+  
+  // 2. Ajusta a sensibilidade do swipe para mobile
+  const mobileThreshold = 30; // Mais sensível no celular
+  
+  hqContainer.addEventListener('touchend', function mobileSwipe() {
+    if (!startX || !moveX) return;
+    
+    const diff = moveX - startX;
+    
+    if (diff < -mobileThreshold) {
+      currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
+    } 
+    else if (diff > mobileThreshold) {
+      currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
+    }
+    
+    updateHQCarousel();
+    startX = null;
+    moveX = null;
+  }, { passive: true });
+}
+
+// Aplica ao carregar e redimensionar
+window.addEventListener('load', applyMobileStyles);
+window.addEventListener('resize', applyMobileStyles);
     
     // 8. Games Tabs
     const tabButtons = document.querySelectorAll('.tab-btn');
