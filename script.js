@@ -302,9 +302,22 @@ function applyMobileStyles() {
   }, { passive: true });
 }
 
-// Aplica ao carregar e redimensionar
-window.addEventListener('load', applyMobileStyles);
-window.addEventListener('resize', applyMobileStyles);
+// Garante alinhamento perfeito em qualquer dispositivo
+function adjustLayout() {
+  if (window.innerWidth <= 768) {
+    // Centraliza verticalmente
+    document.querySelectorAll('.hq-slide').forEach(slide => {
+      slide.style.display = 'flex';
+      slide.style.flexDirection = 'column';
+      slide.style.justifyContent = 'center';
+    });
+  }
+}
+
+// Executa ao carregar e redimensionar
+window.addEventListener('load', adjustLayout);
+window.addEventListener('resize', adjustLayout);
+
 // Otimização para mobile
 if (window.innerWidth <= 768) {
   const hqSlides = document.querySelectorAll('.hq-slide');

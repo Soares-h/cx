@@ -868,7 +868,7 @@ body {
     flex-direction: column;
     align-items: center; /* Centraliza horizontalmente */
     justify-content: center; /* Centraliza verticalmente */
-    background-color: transparent; /* Remove fundo colorido */
+    background-color: transparent !important; /* Remove fundo colorido */
 }
 
 /* Imagens - Correção Crucial */
@@ -887,14 +887,44 @@ body {
     transition: border-color 0.3s ease;
 }
 
+/* ===== AJUSTES PARA CELULAR ===== */
+@media (max-width: 768px) {
+  /* 1. Corrige textos quebrados */
+  .hq-slide h1, .hq-slide h2 {
+    white-space: nowrap; /* Impede quebra de linha */
+    font-size: 1.5rem; /* Tamanho menor se necessário */
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+
+  /* 2. Ajusta bordas das imagens */
+  .hq-slide img {
+    max-height: 50vh !important; /* Altura menor */
+    border-width: 2px !important; /* Borda mais fina */
+    padding: 3px !important; /* Reduz espaçamento interno */
+  }
+
+  /* 3. Centraliza conteúdo verticalmente */
+  .hq-container {
+    min-height: 300px !important;
+    padding: 10px 0 !important;
+  }
+
+  /* 4. Corrige margens para evitar cortes */
+  .hq-carousel {
+    margin: 1rem auto !important;
+    overflow: visible !important; /* Permite que bordas saiam da área */
+  }
+}
+
 body.dark-mode .hq-slide img {
-  border-color: white;
+  border-color: white !important;
   background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
 }
 
 /* Modo Claro - Borda preta */
 body:not(.dark-mode) .hq-slide img {
-  border-color: black;
+  border-color: black !important;
   background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -939,7 +969,7 @@ body:not(.dark-mode) .hq-slide img {
 
 /* Setas (Font Awesome) */
 .carousel-btn i {
-  color: white;
+  color: white !important;
   font-size: 1.2rem;
 }
 
