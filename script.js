@@ -219,8 +219,14 @@ let startX, moveX; // Variáveis para controle do touch
 
 // Função principal de atualização
 function updateHQCarousel() {
-    hqContainer.style.transform = `translateX(-${currentHQIndex * 100}%)`;
-    hqContainer.style.transition = 'transform 0.5s ease'; // Adiciona transição suave
+  // Suaviza a transição entre slides
+  hqContainer.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+  hqContainer.style.transform = `translateX(-${currentHQIndex * 100}%)`;
+  
+  // Força repaint para evitar bugs visuais
+  requestAnimationFrame(() => {
+    hqContainer.getBoundingClientRect();
+  });
 }
 
 // Navegação por botões
@@ -269,64 +275,6 @@ hqContainer.addEventListener('touchend', () => {
 
 // Inicialização
 updateHQCarousel();
-
-// ===== MODIFICAÇÕES EXCLUSIVAS PARA MOBILE =====
-function isMobile() {
-  return window.innerWidth <= 768;
-}
-
-function applyMobileStyles() {
-  if (!isMobile()) return;
-  
-  // 1. Adiciona a classe mobile ao carrossel
-  document.querySelector('.hq-carousel').classList.add('mobile-version');
-  
-  // 2. Ajusta a sensibilidade do swipe para mobile
-  const mobileThreshold = 30; // Mais sensível no celular
-  
-  hqContainer.addEventListener('touchend', function mobileSwipe() {
-    if (!startX || !moveX) return;
-    
-    const diff = moveX - startX;
-    
-    if (diff < -mobileThreshold) {
-      currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
-    } 
-    else if (diff > mobileThreshold) {
-      currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
-    }
-    
-    updateHQCarousel();
-    startX = null;
-    moveX = null;
-  }, { passive: true });
-}
-
-// Garante alinhamento perfeito em qualquer dispositivo
-function adjustLayout() {
-  if (window.innerWidth <= 768) {
-    // Centraliza verticalmente
-    document.querySelectorAll('.hq-slide').forEach(slide => {
-      slide.style.display = 'flex';
-      slide.style.flexDirection = 'column';
-      slide.style.justifyContent = 'center';
-    });
-  }
-}
-
-// Executa ao carregar e redimensionar
-window.addEventListener('load', adjustLayout);
-window.addEventListener('resize', adjustLayout);
-
-// Otimização para mobile
-if (window.innerWidth <= 768) {
-  const hqSlides = document.querySelectorAll('.hq-slide');
-  
-  hqSlides.forEach(slide => {
-    slide.style.flexShrink = '0';
-    slide.style.minWidth = '100%';
-  });
-}
     
     // 8. Games Tabs
     const tabButtons = document.querySelectorAll('.tab-btn');

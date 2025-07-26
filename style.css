@@ -887,36 +887,6 @@ body {
     transition: border-color 0.3s ease;
 }
 
-/* ===== AJUSTES PARA CELULAR ===== */
-@media (max-width: 768px) {
-  /* 1. Corrige textos quebrados */
-  .hq-slide h1, .hq-slide h2 {
-    white-space: nowrap; /* Impede quebra de linha */
-    font-size: 1.5rem; /* Tamanho menor se necessário */
-    text-align: center;
-    margin: 0.5rem 0;
-  }
-
-  /* 2. Ajusta bordas das imagens */
-  .hq-slide img {
-    max-height: 50vh !important; /* Altura menor */
-    border-width: 2px !important; /* Borda mais fina */
-    padding: 3px !important; /* Reduz espaçamento interno */
-  }
-
-  /* 3. Centraliza conteúdo verticalmente */
-  .hq-container {
-    min-height: 300px !important;
-    padding: 10px 0 !important;
-  }
-
-  /* 4. Corrige margens para evitar cortes */
-  .hq-carousel {
-    margin: 1rem auto !important;
-    overflow: visible !important; /* Permite que bordas saiam da área */
-  }
-}
-
 body.dark-mode .hq-slide img {
   border-color: white !important;
   background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
@@ -979,44 +949,48 @@ body:not(.dark-mode) .hq-slide img {
   transform: translateY(-50%) scale(1.1);
 }
 
-/* ===== CORREÇÕES URGENTES PARA MOBILE ===== */
+/* ===== AJUSTES PARA CELULAR ===== */
 @media (max-width: 768px) {
-  /* Contêiner principal */
-  .hq-carousel {
-    max-height: 80vh !important;
-    overflow: hidden !important;
-    margin: 0 auto !important;
+  /* 1. Corrige textos quebrados */
+  .hq-slide h1, .hq-slide h2 {
+    white-space: nowrap; /* Impede quebra de linha */
+    font-size: 1.5rem; /* Tamanho menor se necessário */
+    text-align: center;
+    margin: 0.5rem 0;
   }
 
-  /* Imagens proporcionalmente redimensionadas */
-  .hq-slide img {
-    max-height: 50vh !important;
-    width: auto !important;
-    object-fit: contain !important;
-    margin: 0 auto 1rem !important;
-    border: 2px solid #000 !important;
-  }
-
-  /* Textos legíveis e alinhados */
-  .hq-slide h1, 
-  .hq-slide h2, 
-  .hq-slide h3 {
-    font-size: clamp(1rem, 4vw, 1.5rem) !important;
-    line-height: 1.3 !important;
-    margin: 0.5rem auto !important;
-    text-align: center !important;
-    white-space: normal !important; /* Permite quebra de linha */
-    padding: 0 1rem !important;
-  }
-
-  /* Botões de navegação visíveis */
+  /* Posicionamento dos botões */
   .carousel-btn {
     width: 30px !important;
-    height: 50px !important;
-    background: rgba(0,0,0,0.7) !important;
+    height: 30px !important;
   }
-  .prev-btn { left: 5px !important; }
-  .next-btn { right: 5px !important; }
+  .prev-btn {
+    left: 5px !important;
+  }
+  .next-btn {
+    right: 5px !important;
+  }
+
+  /* 2. Ajusta bordas das imagens */
+  .hq-slide img {
+    max-height: 55vh !important; /* Altura menor */
+    border-width: 2px !important; /* Borda mais fina */
+    padding: 3px !important; /* Reduz espaçamento interno */
+    object-fit: cover !important; /* Garante preenchimento sem distorção */
+    width: 95% !important; /* Limita a largura */
+  }
+
+  /* 3. Centraliza conteúdo verticalmente */
+  .hq-container {
+    min-height: 320px !important;
+    padding: 10px 0 !important;
+  }
+
+  /* 4. Corrige margens para evitar cortes */
+  .hq-carousel {
+    margin: 1rem auto !important;
+    overflow: visible !important; /* Permite que bordas saiam da área */
+  }
 }
 
 /* Games Modal */
