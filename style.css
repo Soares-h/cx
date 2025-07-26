@@ -958,10 +958,16 @@ body:not(.dark-mode) .hq-slide img {
     background: #ff80b7 !important; /* Vermelho - troque pela cor desejada */
     border: 2px solid white !important;
     opacity: 0.9 !important;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
+    /* Posicionamento */
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
     z-index: 1000 !important;
   }
-  .prev-btn { left: 12px !important; }  /* Distância da borda */
-  .next-btn { right: 12px !important; }
+  .prev-btn { left: 15px !important; }  /* Distância da borda */
+  .next-btn { right: 15px !important; }
 
   /* 2. Espaçamento entre slides */
   .hq-container {
