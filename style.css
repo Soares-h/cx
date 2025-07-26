@@ -949,47 +949,29 @@ body:not(.dark-mode) .hq-slide img {
   transform: translateY(-50%) scale(1.1);
 }
 
-/* ===== AJUSTES PARA CELULAR ===== */
+/* ===== APENAS PARA CELULAR ===== */
 @media (max-width: 768px) {
-  /* 1. Corrige textos quebrados */
-  .hq-slide h1, .hq-slide h2 {
-    white-space: nowrap; /* Impede quebra de linha */
-    font-size: 1.5rem; /* Tamanho menor se necessário */
-    text-align: center;
-    margin: 0.5rem 0;
-  }
-
-  /* Posicionamento dos botões */
+  /* 1. Botões maiores e mais visíveis */
   .carousel-btn {
-    width: 30px !important;
-    height: 30px !important;
+    width: 44px !important;       /* Tamanho aumentado */
+    height: 44px !important;
+    background: #ff80b7 !important; /* Vermelho - troque pela cor desejada */
+    border: 2px solid white !important;
+    opacity: 0.9 !important;
+    z-index: 1000 !important;
   }
-  .prev-btn {
-    left: 5px !important;
-  }
-  .next-btn {
-    right: 5px !important;
-  }
+  .prev-btn { left: 12px !important; }  /* Distância da borda */
+  .next-btn { right: 12px !important; }
 
-  /* 2. Ajusta bordas das imagens */
-  .hq-slide img {
-    max-height: 55vh !important; /* Altura menor */
-    border-width: 2px !important; /* Borda mais fina */
-    padding: 3px !important; /* Reduz espaçamento interno */
-    object-fit: cover !important; /* Garante preenchimento sem distorção */
-    width: 95% !important; /* Limita a largura */
-  }
-
-  /* 3. Centraliza conteúdo verticalmente */
+  /* 2. Espaçamento entre slides */
   .hq-container {
-    min-height: 320px !important;
-    padding: 10px 0 !important;
+    gap: 16px !important;        /* Espaço entre imagens */
+    padding: 0 8px !important;   /* Margem lateral */
   }
 
-  /* 4. Corrige margens para evitar cortes */
-  .hq-carousel {
-    margin: 1rem auto !important;
-    overflow: visible !important; /* Permite que bordas saiam da área */
+  /* 3. Garante que as imagens não fiquem coladas */
+  .hq-slide {
+    padding: 4px !important;     /* Espaço interno */
   }
 }
 
