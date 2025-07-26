@@ -210,71 +210,23 @@ console.log("%c💖 Como deseja aproveitar o momento, meu amor?", "font-size: 16
     });
     
 // 7. HQ Carousel
-const hqContainer = document.querySelector('.hq-container');
-const prevHQBtn = document.querySelector('.prev-btn');
-const nextHQBtn = document.querySelector('.next-btn');
-const hqSlides = document.querySelectorAll('.hq-slide');
-let currentHQIndex = 0;
-let startX, moveX; // Variáveis para controle do touch
+// Configuração básica
+let currentIndex = 0;
+const container = document.querySelector('.hq-container');
+const slides = document.querySelectorAll('.hq-slide');
 
-// Função principal de atualização
-function updateHQCarousel() {
-  // Suaviza a transição entre slides
-  hqContainer.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-  hqContainer.style.transform = `translateX(-${currentHQIndex * 100}%)`;
-  
-  // Força repaint para evitar bugs visuais
-  requestAnimationFrame(() => {
-    hqContainer.getBoundingClientRect();
-  });
+// Função para mover slides
+function moveSlide(direction) {
+  currentIndex = (currentIndex + direction + slides.length) % slides.length;
+  container.style.transform = `translateX(-${currentIndex * 100}%)`;
 }
 
-// Navegação por botões
-prevHQBtn.addEventListener('click', () => {
-    currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
-    updateHQCarousel();
-});
-
-nextHQBtn.addEventListener('click', () => {
-    currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
-    updateHQCarousel();
-});
-
-// Controle por Toque (Swipe)
-hqContainer.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    hqContainer.style.transition = 'none'; // Remove transição durante o swipe
-}, {passive: true});
-
-hqContainer.addEventListener('touchmove', (e) => {
-    if (!startX) return;
-    moveX = e.touches[0].clientX;
-    const diff = moveX - startX;
-    hqContainer.style.transform = `translateX(calc(-${currentHQIndex * 100}% + ${diff}px)`;
-}, {passive: true});
-
-hqContainer.addEventListener('touchend', () => {
-    if (!startX || !moveX) return;
-    
-    const threshold = 50; // Sensibilidade do swipe
-    const diff = moveX - startX;
-    
-    // Swipe para esquerda (avançar)
-    if (diff < -threshold) {
-        currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
-    } 
-    // Swipe para direita (voltar)
-    else if (diff > threshold) {
-        currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
-    }
-    
-    updateHQCarousel();
-    startX = null;
-    moveX = null;
-});
+// Eventos dos botões
+document.querySelector('.prev-btn').addEventListener('click', () => moveSlide(-1));
+document.querySelector('.next-btn').addEventListener('click', () => moveSlide(1));
 
 // Inicialização
-updateHQCarousel();
+container.style.transform = 'translateX(0)';
     
     // 8. Games Tabs
     const tabButtons = document.querySelectorAll('.tab-btn');

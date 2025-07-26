@@ -951,34 +951,42 @@ body:not(.dark-mode) .hq-slide img {
 
 /* ===== APENAS PARA CELULAR ===== */
 @media (max-width: 768px) {
-  /* 1. Botões maiores e mais visíveis */
+  /* 1. Elimina scroll acidental */
+  .hq-carousel {
+    overflow: hidden !important;
+    width: 100% !important;
+  }
+
+  /* 2. Container dos slides (sem scroll) */
+  .hq-container {
+    display: flex !important;
+    width: 100% !important;
+    transition: transform 0.3s ease !important;
+    overflow: visible !important;
+  }
+
+  /* 3. Slides individuais */
+  .hq-slide {
+    min-width: 100% !important;
+    scroll-snap-align: start !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 4. Botões estilizados */
   .carousel-btn {
-    width: 44px !important;       /* Tamanho aumentado */
-    height: 44px !important;
-    background: #ff80b7 !important; /* Vermelho - troque pela cor desejada */
-    border: 2px solid white !important;
-    opacity: 0.9 !important;
-    border-radius: 50% !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
-    /* Posicionamento */
     position: absolute !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
+    width: 44px !important;
+    height: 44px !important;
+    background: #fa739b !important;
+    color: white !important;
+    border: 2px solid white !important;
+    border-radius: 50% !important;
     z-index: 1000 !important;
   }
-  .prev-btn { left: 15px !important; }  /* Distância da borda */
-  .next-btn { right: 15px !important; }
-
-  /* 2. Espaçamento entre slides */
-  .hq-container {
-    gap: 16px !important;        /* Espaço entre imagens */
-    padding: 0 8px !important;   /* Margem lateral */
-  }
-
-  /* 3. Garante que as imagens não fiquem coladas */
-  .hq-slide {
-    padding: 4px !important;     /* Espaço interno */
-  }
+  .prev-btn { left: 10px !important; }
+  .next-btn { right: 10px !important; }
 }
 
 /* Games Modal */
