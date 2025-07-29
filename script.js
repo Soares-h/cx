@@ -219,8 +219,9 @@ let startX, moveX; // Variáveis para controle do touch
 
 // Função principal de atualização
 function updateHQCarousel() {
-    hqContainer.style.transform = `translateX(-${currentHQIndex * 100}%)`;
-    hqContainer.style.transition = 'transform 0.5s ease'; // Adiciona transição suave
+    const slideWidth = document.querySelector('.hq-slide').clientWidth; // ← Mede a largura REAL
+    hqContainer.style.transform = `translateX(-${currentHQIndex * slideWidth}px)`; // ← Usa px em vez de %
+    hqContainer.style.transition = 'transform 0.4s ease';
 }
 
 // Navegação por botões
@@ -267,8 +268,9 @@ hqContainer.addEventListener('touchend', () => {
     moveX = null;
 });
 
-// Inicialização
-updateHQCarousel();
+window.addEventListener('resize', function() {
+    updateHQCarousel(); // Recalcula ao redimensionar
+});
     
     // 8. Games Tabs
     const tabButtons = document.querySelectorAll('.tab-btn');
