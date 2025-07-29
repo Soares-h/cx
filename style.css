@@ -887,6 +887,36 @@ body {
     transition: border-color 0.3s ease;
 }
 
+/* ===== AJUSTES PARA CELULAR ===== */
+@media (max-width: 768px) {
+  /* 1. Corrige textos quebrados */
+  .hq-slide h1, .hq-slide h2 {
+    white-space: nowrap; /* Impede quebra de linha */
+    font-size: 1.5rem; /* Tamanho menor se necessário */
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+
+  /* 2. Ajusta bordas das imagens */
+  .hq-slide img {
+    max-height: 50vh !important; /* Altura menor */
+    border-width: 2px !important; /* Borda mais fina */
+    padding: 3px !important; /* Reduz espaçamento interno */
+  }
+
+  /* 3. Centraliza conteúdo verticalmente */
+  .hq-container {
+    min-height: 300px !important;
+    padding: 10px 0 !important;
+  }
+
+  /* 4. Corrige margens para evitar cortes */
+  .hq-carousel {
+    margin: 1rem auto !important;
+    overflow: visible !important; /* Permite que bordas saiam da área */
+  }
+}
+
 body.dark-mode .hq-slide img {
   border-color: white !important;
   background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
@@ -949,58 +979,6 @@ body:not(.dark-mode) .hq-slide img {
   transform: translateY(-50%) scale(1.1);
 }
 
-/* ===== VERSÃO MOBILE ATUALIZADA ===== */
-@media (max-width: 768px) {
-  /* Container principal */
-  .hq-container {
-    width: 100vw;
-    overflow: hidden;
-  }
-
-  /* Slides individuais */
-  .hq-slide {
-    width: 100vw;
-    min-width: 100vw;
-    box-sizing: border-box;
-    padding: 0 15px;
-  }
-
-  /* 1. Textos (agora com quebra responsiva) */
-  .hq-slide h1, 
-  .hq-slide h2,
-  .hq-slide h3 {
-    white-space: normal !important;
-    word-wrap: break-word;
-    text-align: center !important;
-    font-size: clamp(1.2rem, 5vw, 1.8rem) !important;
-    margin: 0.5rem 0 !important;
-    padding: 0 !important;
-  }
-
-  /* 2. Imagens (mais responsivas) */
-  .hq-slide img {
-    max-height: 50vh !important;
-    max-width: 100% !important;
-    height: auto !important;
-    display: block !important;
-    margin: 0 auto !important;
-    border: 2px solid #000 !important;
-  }
-
-  /* 3. Botões (posicionamento seguro) */
-  .carousel-btn {
-    width: 40px !important;
-    height: 40px !important;
-    background: #f37dba !important;
-    border: 2px solid white !important;
-    border-radius: 50% !important;
-    z-index: 10;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .prev-btn { left: 5px !important; }
-  .next-btn { right: 5px !important; }
-}
 /* Games Modal */
 .games-tabs {
     display: flex;
