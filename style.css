@@ -887,6 +887,52 @@ body {
     transition: border-color 0.3s ease;
 }
 
+/* ===== AJUSTES PARA CELULAR ===== */
+/* ===== VERSÃO MOBILE OTIMIZADA ===== */
+@media (max-width: 768px) {
+  /* 1. Imagens proporcionalmente redimensionadas */
+  .hq-slide img {
+    max-height: 50vh !important;
+    max-width: 90% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin: 0 auto !important;
+    border: 2px solid #000 !important;
+    padding: 0 !important;
+  }
+
+  /* 2. Container ajustado */
+  .hq-container {
+    min-height: 60vh !important;
+    align-items: center !important;
+    padding: 0 !important;
+    gap: 10px !important;
+  }
+
+  /* 3. Botões fixos e visíveis */
+  .carousel-btn {
+    width: 44px !important;
+    height: 44px !important;
+    background: var(--primary-color) !important;
+    z-index: 1000 !important;
+  }
+  .prev-btn { left: 5px !important; }
+  .next-btn { right: 5px !important; }
+
+  /* 4. Textos (opcional, se houver) */
+  .hq-slide h1, .hq-slide h2 {
+    white-space: nowrap !important;
+    font-size: 1.3rem !important;
+    margin: 0.5rem 0 !important;
+  }
+  /* 4. Corrige margens para evitar cortes */
+  .hq-carousel {
+    margin: 1rem auto !important;
+    overflow: visible !important; /* Permite que bordas saiam da área */
+  }
+}
+
 body.dark-mode .hq-slide img {
   border-color: white !important;
   background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
@@ -947,46 +993,6 @@ body:not(.dark-mode) .hq-slide img {
 .carousel-btn:hover {
   background-color: var(--hover-color); /* Cor secundária (ex: #1ED760) */
   transform: translateY(-50%) scale(1.1);
-}
-
-/* ===== APENAS PARA CELULAR ===== */
-@media (max-width: 768px) {
-  /* 1. Elimina scroll acidental */
-  .hq-carousel {
-    overflow: hidden !important;
-    width: 100% !important;
-  }
-
-  /* 2. Container dos slides (sem scroll) */
-  .hq-container {
-    display: flex !important;
-    width: 100% !important;
-    transition: transform 0.3s ease !important;
-    overflow: visible !important;
-  }
-
-  /* 3. Slides individuais */
-  .hq-slide {
-    min-width: 100% !important;
-    scroll-snap-align: start !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* 4. Botões estilizados */
-  .carousel-btn {
-    position: absolute !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 44px !important;
-    height: 44px !important;
-    background: #fa739b !important;
-    color: white !important;
-    border: 2px solid white !important;
-    border-radius: 50% !important;
-    z-index: 1000 !important;
-  }
-  .prev-btn { left: 10px !important; }
-  .next-btn { right: 10px !important; }
 }
 
 /* Games Modal */
