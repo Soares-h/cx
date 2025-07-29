@@ -218,8 +218,13 @@ const slides = document.querySelectorAll('.hq-slide');
 // Função para mover slides
 function moveSlide(direction) {
   currentIndex = (currentIndex + direction + slides.length) % slides.length;
-  container.style.transform = `translateX(-${currentIndex * 100}%)`;
+  const slideWidth = document.querySelector('.hq-slide').clientWidth;
+  container.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
 }
+
+window.addEventListener('resize', function() {
+  container.style.transform = `translateX(-${currentIndex * document.querySelector('.hq-slide').clientWidth}px)`;
+});
 
 // Eventos dos botões
 document.querySelector('.prev-btn').addEventListener('click', () => moveSlide(-1));
