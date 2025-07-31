@@ -386,56 +386,80 @@ body {
 /* Messages Modal */
 .message-container {
     margin-top: 2rem;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
 }
 
-.message {
-    background-color: var(--bg-color);
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 3px 10px var(--shadow-color);
+.message-header {
+    padding: 12px 15px;
+    min-height: 50px;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
-.message h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--primary-color);
+.message-header:hover {
+    background-color: #f0f0f0;
 }
 
-.message-date {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-    opacity: 0.7;
+.arrow {
+    transition: transform 0.3s ease;
+    font-size: 18px;
+    margin-left: 10px;
 }
 
 .message-content {
     font-size: 1.1rem;
-    line-height: 1.6;
+    line-height: 1.2;
     margin-bottom: 1.5rem;
+    padding: 0 15px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
-.reactions {
-    display: flex;
-    gap: 0.5rem;
+.message-content.open {
+    max-height: 2000px; /* Valor maior que o conteúdo */
+    padding: 15px;
 }
 
-.reaction-btn {
-    background-color: var(--bg-color);
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--transition);
+.message-content.show {
+    padding: 15px;
+    max-height: 2000px; /* Ajuste conforme necessário */
 }
 
-.reaction-btn:hover {
-    transform: scale(1.2);
+.message-content h4 {
+    margin-top: 0;
+    color: #d23c77;
 }
 
+/* Melhora a interação em touchscreens */
+.message-header:active {
+    background-color: #e0e5ec !important;
+    transform: scale(0.98);
+    transition: transform 0.1s;
+}
+
+/* Ajuste de texto para telas pequenas */
+@media (max-width: 480px) {
+    .message-content {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    
+    .message-header span:first-child {
+        font-size: 16px;
+    }
+}
 /* Music Modal */
 .music-player {
     margin-top: 2rem;
@@ -1315,4 +1339,39 @@ body:not(.dark-mode) .hq-slide img {
     .playlists-grid {
         grid-template-columns: 1fr;
     }
+}
+
+#musicToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+#musicStatus {
+  display: none; /* Visível apenas em telas maiores */
+}
+
+@media (min-width: 768px) {
+  #musicToggle {
+    width: auto;
+    padding: 0 15px;
+    border-radius: 25px;
+  }
+  #musicStatus {
+    display: inline;
+    margin-left: 8px;
+    font-size: 0.9rem;
+  }
 }

@@ -271,7 +271,7 @@ hqContainer.addEventListener('touchend', () => {
 window.addEventListener('resize', function() {
     updateHQCarousel(); // Recalcula ao redimensionar
 });
-    
+
     // 8. Games Tabs
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -368,6 +368,63 @@ window.addEventListener('resize', function() {
         button.addEventListener('click', () => {
             const playlistId = button.getAttribute('data-spotify');
             window.open(`https://open.spotify.com/playlist/${playlistId}`, '_blank');
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const music = document.getElementById('bgMusic');
+  const toggleBtn = document.getElementById('musicToggle');
+  const musicStatus = document.getElementById('musicStatus');
+  
+  // Tenta reproduzir automaticamente (com tratamento de erro)
+  function tryAutoplay() {
+    const promise = music.play();
+    
+    if (promise !== undefined) {
+      promise.catch(error => {
+        toggleBtn.style.display = 'flex'; // Mostra botão se autoplay falhar
+      });
+    }
+  }
+
+  // Controle manual
+  toggleBtn.addEventListener('click', () => {
+    if (music.paused) {
+      music.play();
+      musicStatus.textContent = 'Pausar';
+      toggleBtn.innerHTML = '<i class="fas fa-pause"></i><span id="musicStatus">Pausar</span>';
+    } else {
+      music.pause();
+      musicStatus.textContent = 'Tocar';
+      toggleBtn.innerHTML = '<i class="fas fa-music"></i><span id="musicStatus">Tocar</span>';
+    }
+  });
+
+  // Inicia com ícone correto
+  musicStatus.textContent = music.paused ? 'Tocar' : 'Pausar';
+  
+  // Tenta autoplay quando o usuário interagir com a página
+  document.body.addEventListener('click', tryAutoplay, { once: true });
+});
+
+//função para as mensagens
+document.addEventListener('DOMContentLoaded', function() {
+    const headers = document.querySelectorAll('.message-header');
+    
+    headers.forEach(header => {
+        header.addEventListener('click', function() {
+            const container = this.parentElement;
+            const content = container.querySelector('.message-content');
+            const arrow = this.querySelector('.arrow');
+            
+            content.classList.toggle('open');
+            
+            if (content.classList.contains('open')) {
+                arrow.textContent = '▼';
+            } else {
+                arrow.textContent = '▶';
+            }
         });
     });
 });
