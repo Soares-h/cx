@@ -868,139 +868,137 @@ body {
     }
 }
 /* Adventures Modal - Versão Otimizada */
-/* Estrutura Principal */
-.hq-carousel {
-    position: relative;
-    margin: 2rem auto;
-    max-width: 800px;
-    width: 95%;
-    overflow: hidden; /* Novo */
+/* Reset Total */
+.hq-chapter * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.hq-container {
-    display: flex;
-    width: 100%;
-    min-height: 400px; /* Altura mínima garantida */
-    padding: 5px; /* Espaçamento extra */
+/* Estrutura Básica */
+.hq-chapter {
+  margin: 20px 0;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.hq-slide {
-    min-width: 100%;
-    flex-shrink: 0;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza horizontalmente */
-    justify-content: center; /* Centraliza verticalmente */
-    background-color: transparent !important; /* Remove fundo colorido */
+/* Mostra apenas quando o capítulo está aberto */
+.hq-chapter.active .hq-controls {
+    display: flex; /* Adicione esta linha */
 }
 
-/* Imagens - Correção Crucial */
-.hq-slide img {
-    max-width: 100%;
-    max-height: 65vh;
-    width: auto;
-    height: auto;
-    display: block;
-    object-fit: contain;
-    object-position: center;
-    margin: 0 auto;
-    border: 4px solid; /* Espessura da borda */
-    padding: 8px; /* Espaçamento interno */
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
+.hq-trigger {
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #ff9a9e 0%, #c86bff 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  letter-spacing: 0.5px;
+  border: none;
 }
 
-/* ===== AJUSTES PARA CELULAR ===== */
-@media (max-width: 768px) {
-  /* 1. Corrige textos quebrados */
-  .hq-slide h1, .hq-slide h2 {
-    white-space: nowrap; /* Impede quebra de linha */
-    font-size: 1.5rem; /* Tamanho menor se necessário */
-    text-align: center;
-    margin: 0.5rem 0;
-  }
-
-  /* 2. Ajusta bordas das imagens */
-  .hq-slide img {
-    max-height: 50vh !important; /* Altura menor */
-    border-width: 2px !important; /* Borda mais fina */
-    padding: 3px !important; /* Reduz espaçamento interno */
-  }
-
-  /* 3. Centraliza conteúdo verticalmente */
-  .hq-container {
-    min-height: 300px !important;
-    padding: 10px 0 !important;
-  }
-
-  /* 4. Corrige margens para evitar cortes */
-  .hq-carousel {
-    margin: 1rem auto !important;
-    overflow: visible !important; /* Permite que bordas saiam da área */
-  }
+.hq-trigger:hover {
+  background: linear-gradient(135deg, #ff8a9e 0%, #b84bff 100%);
 }
 
-body.dark-mode .hq-slide img {
-  border-color: white !important;
-  background-color: rgba(255, 255, 255, 0.1); /* Leve brilho */
+.hq-pages {
+  display: none; /* Começa escondido */
+  padding: 10px;
 }
 
-/* Modo Claro - Borda preta */
-body:not(.dark-mode) .hq-slide img {
-  border-color: black !important;
-  background-color: rgba(0, 0, 0, 0.05);
+.hq-pages img {
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  display: none;
 }
 
-.hq-slide:nth-child(2) img {
-    animation: pulse 2s infinite;
+.hq-pages img.active {
+  display: block;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.95; }
-    50% { opacity: 1; }
-    100% { opacity: 0.95; }
+/* Controles */
+.hq-controls {
+  display: none;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+  background: #f8f9fa;
 }
 
-/* Restauração dos botões */
-.carousel-btn {
-  /* Estilo original (ajuste conforme seu projeto) */
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--primary-color); /* Cor original */
+.hq-prev, .hq-next {
+  background: linear-gradient(135deg, #ff6b9e 0%, #a86bff 100%);
   color: white;
   border: none;
-  font-size: 1rem;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-weight: bold;
   cursor: pointer;
-  z-index: 10;
+  box-shadow: 0 4px 15px rgba(168, 107, 255, 0.3);
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
 }
 
-.prev-btn {
-    left: 15px;
+.hq-prev:hover, .hq-next:hover {
+  background: linear-gradient(135deg, #ff4d8d 0%, #9a4dff 100%);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(168, 107, 255, 0.4);
 }
 
-.next-btn {
-  right: 15px;
+/* Fundo do modal - Adapta ao tema */
+.hq-chapter {
+  background: var(--bg-color, white); /* Fallback para modo claro */
 }
 
-/* Setas (Font Awesome) */
-.carousel-btn i {
-  color: white !important;
-  font-size: 1.2rem;
+.hq-pages, .hq-controls {
+  background: var(--secondary-bg, #f8f9fa); /* Fallback claro */
 }
 
-/* Efeito hover */
-.carousel-btn:hover {
-  background-color: var(--hover-color); /* Cor secundária (ex: #1ED760) */
-  transform: translateY(-50%) scale(1.1);
+/* Se seu tema já usa variáveis CSS, adicione: */
+body.dark-mode .hq-chapter {
+  --bg-color: #121212;
+  --secondary-bg: #1e1e1e;
+}
+
+body.light-mode .hq-chapter {
+  --bg-color: white;
+  --secondary-bg: #f8f9fa;
+}
+
+/* Modo Escuro - Ajustes de Contraste */
+body.dark-mode .hq-trigger,
+body.dark-mode .hq-prev,
+body.dark-mode .hq-next {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .hq-trigger {
+  background: linear-gradient(135deg, #e05294 0%, #8a2be2 100%);
+}
+
+/* Animação sutil */
+@keyframes pulse {
+  0% { opacity: 0.95; }
+  50% { opacity: 1; }
+  100% { opacity: 0.95; }
+}
+
+.hq-trigger {
+  animation: pulse 4s infinite;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .hq-trigger { padding: 12px; }
+  .hq-pages img { max-height: 50vh; }
 }
 
 /* Games Modal */

@@ -210,67 +210,63 @@ console.log("%c💖 Como deseja aproveitar o momento, meu amor?", "font-size: 16
     });
     
 // 7. HQ Carousel
-const hqContainer = document.querySelector('.hq-container');
-const prevHQBtn = document.querySelector('.prev-btn');
-const nextHQBtn = document.querySelector('.next-btn');
-const hqSlides = document.querySelectorAll('.hq-slide');
-let currentHQIndex = 0;
-let startX, moveX; // Variáveis para controle do touch
+// Controle do Acordeão
+document.querySelectorAll('.hq-trigger').forEach(trigger => {
+  trigger.addEventListener('click', function(e) {
+    // Impede a propagação para elementos pais
+    e.stopPropagation();
+    
+    const chapter = this.closest('.hq-chapter');
+    const pages = chapter.querySelector('.hq-pages');
+    const controls = chapter.querySelector('.hq-controls');
+    const icon = this.querySelector('.hq-icon');
+    
+    // Alterna visibilidade
+    if (pages.style.display === 'block') {
+      pages.style.display = 'none';
+      controls.style.display = 'none';
+      icon.textContent = '▼';
+    } else {
+      pages.style.display = 'block';
+      controls.style.display = 'flex'; // Mostra os controles
+      icon.textContent = '▲';
+    }
+  });
+});
 
-// Função principal de atualização
-function updateHQCarousel() {
-    const slideWidth = document.querySelector('.hq-slide').clientWidth; // ← Mede a largura REAL
-    hqContainer.style.transform = `translateX(-${currentHQIndex * slideWidth}px)`; // ← Usa px em vez de %
-    hqContainer.style.transition = 'transform 0.4s ease';
+// Controle dos Botões (Método à Prova de Falhas)
+function setupCarousel(chapter) {
+  const images = chapter.querySelectorAll('.hq-pages img');
+  const prev = chapter.querySelector('.hq-prev');
+  const next = chapter.querySelector('.hq-next');
+  const counter = chapter.querySelector('.hq-counter');
+  
+  let current = 0;
+  
+  function update() {
+    images.forEach((img, i) => {
+      img.style.display = i === current ? 'block' : 'none';
+    });
+    counter.textContent = `${current + 1}/${images.length}`;
+  }
+  
+  prev.addEventListener('click', function(e) {
+    e.stopPropagation(); // Bloqueia a propagação
+    current = (current - 1 + images.length) % images.length;
+    update();
+  });
+  
+  next.addEventListener('click', function(e) {
+    e.stopPropagation(); // Bloqueia a propagação
+    current = (current + 1) % images.length;
+    update();
+  });
+  
+  update(); // Inicializa
 }
 
-// Navegação por botões
-prevHQBtn.addEventListener('click', () => {
-    currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
-    updateHQCarousel();
-});
-
-nextHQBtn.addEventListener('click', () => {
-    currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
-    updateHQCarousel();
-});
-
-// Controle por Toque (Swipe)
-hqContainer.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    hqContainer.style.transition = 'none'; // Remove transição durante o swipe
-}, {passive: true});
-
-hqContainer.addEventListener('touchmove', (e) => {
-    if (!startX) return;
-    moveX = e.touches[0].clientX;
-    const diff = moveX - startX;
-    hqContainer.style.transform = `translateX(calc(-${currentHQIndex * 100}% + ${diff}px)`;
-}, {passive: true});
-
-hqContainer.addEventListener('touchend', () => {
-    if (!startX || !moveX) return;
-    
-    const threshold = 50; // Sensibilidade do swipe
-    const diff = moveX - startX;
-    
-    // Swipe para esquerda (avançar)
-    if (diff < -threshold) {
-        currentHQIndex = (currentHQIndex + 1) % hqSlides.length;
-    } 
-    // Swipe para direita (voltar)
-    else if (diff > threshold) {
-        currentHQIndex = (currentHQIndex - 1 + hqSlides.length) % hqSlides.length;
-    }
-    
-    updateHQCarousel();
-    startX = null;
-    moveX = null;
-});
-
-window.addEventListener('resize', function() {
-    updateHQCarousel(); // Recalcula ao redimensionar
-});
+// Inicializa todos os carrosséis
+document.querySelectorAll('.hq-chapter').forEach(setupCarousel);
 
     // 8. Games Tabs
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -409,22 +405,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //função para as mensagens
-document.addEventListener('DOMContentLoaded', function() {
-    const headers = document.querySelectorAll('.message-header');
+function toggleMessage(element) {
+    const container = element.closest('.message-container');
+    const content = container.querySelector('.message-content');
+    const arrow = element.querySelector('.arrow');
     
-    headers.forEach(header => {
-        header.addEventListener('click', function() {
-            const container = this.parentElement;
-            const content = container.querySelector('.message-content');
-            const arrow = this.querySelector('.arrow');
-            
-            content.classList.toggle('open');
-            
-            if (content.classList.contains('open')) {
-                arrow.textContent = '▼';
-            } else {
-                arrow.textContent = '▶';
-            }
-        });
-    });
-});
+    // Alterna a classe 'open' no conteúdo da mensagem
+    content.classList.toggle('open');
+    
+    // Atualiza a seta
+    arrow.textContent = content.classList.contains('open') ? '▼' : '▶';
+}
