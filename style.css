@@ -893,10 +893,12 @@ body {
 }
 
 .hq-trigger {
-  padding: 15px 20px;
+  padding: 12px 15px !important; 
   background: linear-gradient(135deg, #ff9a9e 0%, #c86bff 100%);
   color: white;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
   cursor: pointer;
   font-weight: bold;
@@ -917,6 +919,14 @@ body {
   display: inline-block;
   max-width: 80%;
   vertical-align: middle;
+  font-weight: bold;
+  white-space: normal; /* Permite quebra de linha controlada */
+  line-height: 1.3;
+}
+
+.hq-trigger .hq-icon {
+  margin-top: 4px; /* Espaço entre título e seta */
+  align-self: flex-end; /* Seta à direita */
 }
 
 .hq-pages {
