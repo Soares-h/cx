@@ -893,12 +893,10 @@ body {
 }
 
 .hq-trigger {
-  padding: 12px 15px !important; 
+  padding: 15px 20px;
   background: linear-gradient(135deg, #ff9a9e 0%, #c86bff 100%);
   color: white;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   justify-content: space-between;
   cursor: pointer;
   font-weight: bold;
@@ -919,14 +917,6 @@ body {
   display: inline-block;
   max-width: 80%;
   vertical-align: middle;
-  font-weight: bold;
-  white-space: normal; /* Permite quebra de linha controlada */
-  line-height: 1.3;
-}
-
-.hq-trigger .hq-icon {
-  margin-top: 4px; /* Espaço entre título e seta */
-  align-self: flex-end; /* Seta à direita */
 }
 
 .hq-pages {
@@ -969,7 +959,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
 }
 
 .hq-prev:hover, .hq-next:hover {
@@ -1037,34 +1026,12 @@ body.dark-mode .hq-trigger {
     font-size: 1.2rem;
   }
 
-  #adventuresModal .modal-content {
-    padding: 2rem;
-  }
 }  
 
 /* Responsivo */
 @media (max-width: 768px) {
   .hq-trigger { padding: 12px; }
   .hq-pages img { max-height: 50vh; }
-}
-
-/* Regra para TODOS os dispositivos móveis */
-@media (hover: none) and (pointer: coarse) {
-  .hq-trigger span:first-child {
-    font-size: 14px; /* Tamanho fixo (não usa rem) */
-    line-height: 1.3;
-  }
-  
-  .hq-trigger .hq-icon {
-    font-size: 12px;
-  }
-  
-  /* Ajuste extra para iPhones pequenos */
-  @media (max-device-width: 375px) {
-    .hq-trigger span:first-child {
-      font-size: 13px;
-    }
-  }
 }
 
 /* Games Modal */
