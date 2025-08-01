@@ -1048,6 +1048,25 @@ body.dark-mode .hq-trigger {
   .hq-pages img { max-height: 50vh; }
 }
 
+/* Regra para TODOS os dispositivos móveis */
+@media (hover: none) and (pointer: coarse) {
+  .hq-trigger span:first-child {
+    font-size: 14px; /* Tamanho fixo (não usa rem) */
+    line-height: 1.3;
+  }
+  
+  .hq-trigger .hq-icon {
+    font-size: 12px;
+  }
+  
+  /* Ajuste extra para iPhones pequenos */
+  @media (max-device-width: 375px) {
+    .hq-trigger span:first-child {
+      font-size: 13px;
+    }
+  }
+}
+
 /* Games Modal */
 .games-tabs {
     display: flex;
