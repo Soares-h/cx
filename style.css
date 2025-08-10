@@ -1477,3 +1477,48 @@ body.dark-mode .hq-trigger {
     font-size: 0.9rem;
     display: none;
 }
+
+.forgot-password {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.forgot-password a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.feedback-message {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 5px;
+    text-align: center;
+    display: none;
+}
+
+.feedback-message.success {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    display: block;
+}
+
+.feedback-message.error {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+    display: block;
+}
+
+@media (max-width: 480px) {
+    #resetPasswordModal .modal-content {
+        padding: 1rem;
+    }
+    #resetPasswordModal h2 {
+        font-size: 1.5rem;
+    }
+}

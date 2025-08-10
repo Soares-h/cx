@@ -327,4 +327,77 @@ function getErrorMessage(errorCode) {
         default: return 'Ocorreu um erro ao fazer login. Tente novamente mais tarde.';
     }
 }
+
+
+// Adicione no seu arquivo script.js
+
+// 10. Recuperação de Senha
+const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+const resetPasswordModal = document.getElementById('resetPasswordModal');
+const resetPasswordForm = document.getElementById('resetPasswordForm');
+const resetEmail = document.getElementById('resetEmail');
+const resetFeedback = document.getElementById('resetFeedback');
+
+// Abre o modal de redefinição
+forgotPasswordLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal(resetPasswordModal);
+});
+
+// Envia o email de redefinição
+resetPasswordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = resetEmail.value;
+    
+    try {
+        await auth.sendPasswordResetEmail(email);
+        
+        // Feedback de sucesso
+        const resendButton = document.createElement('button');
+        resendButton.textContent = 'Reenviar';
+        resendButton.className = 'resend-button';
+        resendButton.addEventListener('click', () => {
+        resetPasswordForm.dispatchEvent(new Event('submit'));
+});
+        resetFeedback.appendChild(resendButton);
+        resetFeedback.textContent = `Email de redefinição enviado para ${email}`;
+        resetFeedback.className = 'feedback-message success';
+        
+        // Limpa o formulário após 5 segundos e fecha o modal
+        setTimeout(() => {
+            resetPasswordForm.reset();
+            resetFeedback.className = 'feedback-message';
+            resetFeedback.textContent = '';
+            closeModal();
+        }, 5000);
+        
+    } catch (error) {
+        console.error("Erro ao enviar email de redefinição:", error);
+        
+        // Feedback de erro
+        resetFeedback.textContent = getPasswordResetError(error.code);
+        resetFeedback.className = 'feedback-message error';
+    }
+});
+
+// Traduz os códigos de erro
+function getPasswordResetError(code) {
+    switch(code) {
+        case 'auth/invalid-email':
+            return 'O email fornecido é inválido.';
+        case 'auth/user-not-found':
+            return 'Não há usuário cadastrado com este email.';
+        case 'auth/missing-email':
+            return 'Por favor, digite um email.';
+        default:
+            return 'Ocorreu um erro ao enviar o email de redefinição. Tente novamente.';
+    }
+}
+
+resetEmail.addEventListener('input', () => {
+    resetFeedback.className = 'feedback-message';
+    resetFeedback.textContent = '';
+});
+
 });
