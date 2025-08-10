@@ -21,8 +21,25 @@
         <div class="main-screen" id="mainScreen">
             <h1>Para FEDORENTA</h1>
             <p class="subtitle">Feito com todo o meu coração</p>
-            <button class="pulse" id="openBoxBtn">Abrir Caixa da Saudade</button>
+        
+        <div class="login-container">
+            <h2>Acesse nossa Caixa da Saudade</h2>
+        
+            <form id="loginForm">
+                <div class="checkbox-input">
+                    <input type="email" id="email" required>
+                    <label for="email">Seu email</label>
+                </div>
+            
+                <div class="checkbox-input">
+                    <input type="password" id="password" required>
+                    <label for="password">Sua senha</label>
+                </div>
+            
+                <button type="submit" class="pulse" id="loginBtn">Entrar</button>
+            </form>
         </div>
+    </div>
         
         <!-- SEGUNDA TELA -->
         <div class="memory-box" id="memoryBox">
@@ -121,7 +138,6 @@
                         <br>SOU COMPLETAMENTE APAIXONADA POR VOCÊ!</p></strong>
                     </div>
                 </div>
-
                 
                 </div>
             </div>
@@ -387,6 +403,26 @@
     
     <div class="overlay hidden"></div>
     
+    <!-- Adicione isso antes do seu script.js -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script>
+  // Sua configuração do Firebase
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyA4_ozx0r-8IkP7cZI88_3JFTgH7w9NMNU",
+            authDomain: "cx-saudade.firebaseapp.com",
+            databaseURL: "https://cx-saudade-default-rtdb.firebaseio.com",
+            projectId: "cx-saudade",
+            storageBucket: "cx-saudade.firebasestorage.app",
+            messagingSenderId: "939640027600",
+            appId: "1:939640027600:web:7876eec0e8ec1c7e6c61d5",
+            measurementId: "G-NZKN8CXJDX"
+        };
+  
+  // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
     <script src="script.js"></script>
 
     <audio id="bgMusic">
@@ -396,7 +432,7 @@
 
     <!-- Botão de controle visível -->
     <button id="musicToggle" aria-label="Controle de música">
-        <i class="fas fa-music"></>
+        <i class="fas fa-music">
         <span id="musicStatus">Tocar</span>
     </button>
 </body>
