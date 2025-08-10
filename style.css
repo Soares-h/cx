@@ -1513,12 +1513,3 @@ body.dark-mode .hq-trigger {
     color: #dc3545;
     display: block;
 }
-
-@media (max-width: 480px) {
-    #resetPasswordModal .modal-content {
-        padding: 1rem;
-    }
-    #resetPasswordModal h2 {
-        font-size: 1.5rem;
-    }
-}

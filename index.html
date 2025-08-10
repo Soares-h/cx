@@ -35,10 +35,6 @@
                 </div>
             
                 <button type="submit" class="pulse" id="loginBtn">Entrar</button>
-            
-                <p class="forgot-password">
-                    <a href="#" id="forgotPasswordLink">Esqueci minha senha</a>
-                </p>
             </form>
         </div>
     </div>
@@ -404,26 +400,6 @@
     </div>
     
     <div class="overlay hidden"></div>
-
-    <!-- Modal de Redefinição de Senha -->
-    <div class="modal hidden" id="resetPasswordModal">
-        <div class="modal-content">
-            <button class="close-modal">&times;</button>
-            <h2>Redefinir Senha</h2>
-            <p class="modal-subtitle">Digite seu email para receber o link de redefinição</p>
-        
-            <form id="resetPasswordForm">
-                <div class="checkbox-input">
-                    <input type="email" id="resetEmail" required>
-                    <label for="resetEmail">Seu email</label>
-                </div>
-            
-                <button type="submit" class="pulse">Enviar Link</button>
-            </form>
-        
-            <div id="resetFeedback" class="feedback-message"></div>
-        </div>
-    </div>
     
     <!-- Adicione isso antes do seu script.js -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
