@@ -240,7 +240,98 @@ document.addEventListener('DOMContentLoaded', function() {
         arrow.textContent = content.classList.contains('open') ? '▼' : '▶';
     }
 
-// 9. Firebase Authentication
+    document.querySelectorAll('.message-header').forEach(header => {
+        header.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMessage(header);
+        });
+    });
+
+     // 8. Spotify Playlists
+    const playPlaylistButtons = document.querySelectorAll('.play-playlist');
+    
+    playPlaylistButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const playlistId = button.getAttribute('data-spotify');
+            window.open(`https://open.spotify.com/playlist/${playlistId}`, '_blank');
+        });
+    });
+
+
+     // 9. Memory Input
+    const saveMemoryBtn = document.querySelector('.save-memory');
+    
+    saveMemoryBtn.addEventListener('click', () => {
+        const date = document.getElementById('memoryDate').value;
+        const text = document.querySelector('.memory-input textarea').value;
+        const image = document.getElementById('memoryImage').files[0];
+        
+        if (!date || !text) {
+            alert('Por favor, preencha a data e a descrição do momento.');
+            return;
+        }
+        
+        const memoryItem = document.createElement('div');
+        memoryItem.classList.add('memory-item');
+        
+        if (image) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                memoryItem.innerHTML = `
+                    <img src="${e.target.result}" alt="Memória">
+                    <div class="memory-caption">
+                        <h4>${new Date(date).toLocaleDateString('pt-BR')}</h4>
+                        <p>${text}</p>
+                    </div>
+                `;
+                document.querySelector('.memories-gallery').prepend(memoryItem);
+            };
+            reader.readAsDataURL(image);
+        } else {
+            memoryItem.innerHTML = `
+                <img src="https://via.placeholder.com/300x200?text=Nossa+Memória" alt="Memória">
+                <div class="memory-caption">
+                    <h4>${new Date(date).toLocaleDateString('pt-BR')}</h4>
+                    <p>${text}</p>
+                </div>
+            `;
+            document.querySelector('.memories-gallery').prepend(memoryItem);
+        }
+        
+        // Clear form
+        document.getElementById('memoryDate').value = '';
+        document.querySelector('.memory-input textarea').value = '';
+        document.getElementById('memoryImage').value = '';
+    });
+
+
+    // 10. Games Tabs
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            button.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+     // 11. Online Games
+    const playOnlineButtons = document.querySelectorAll('.play-online');
+    
+    playOnlineButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const url = button.getAttribute('data-url');
+            window.open(url, '_blank');
+        });
+    });
+
+// 12. Firebase Authentication
 const auth = firebase.auth();
 const loginForm = document.getElementById('loginForm');
 const emailInput = document.getElementById('email');
