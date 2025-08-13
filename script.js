@@ -419,3 +419,172 @@ function getErrorMessage(errorCode) {
     }
 }
 });
+
+// Firebase Firestore
+const db = firebase.firestore();
+
+// Variável global para armazenar a mensagem atual
+let currentMessageId = null;
+
+// Função para abrir o modal de comentários
+function openCommentModal(messageId) {
+    currentMessageId = messageId;
+    const modal = document.getElementById('commentModal');
+    modal.classList.add('active');
+    loadComments(messageId);
+}
+
+// Função para fechar o modal de comentários
+function closeCommentModal() {
+    const modal = document.getElementById('commentModal');
+    modal.classList.remove('active');
+    currentMessageId = null;
+}
+
+// Função para carregar comentários
+function loadComments(messageId) {
+    const commentsList = document.getElementById('commentsList');
+    commentsList.innerHTML = '<p>Carregando comentários...</p>';
+
+    db.collection('comments').doc(messageId).collection('messages')
+        .orderBy('timestamp', 'asc')
+        .onSnapshot(snapshot => {
+            if (snapshot.empty) {
+                commentsList.innerHTML = '<p>Nenhum comentário ainda. Seja o primeiro!</p>';
+                return;
+            }
+
+            commentsList.innerHTML = '';
+            snapshot.forEach(doc => {
+                const comment = doc.data();
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment';
+                commentElement.innerHTML = `
+                    <div class="comment-user">${comment.userEmail}</div>
+                    <div class="comment-text">${comment.text}</div>
+                `;
+                commentsList.appendChild(commentElement);
+            });
+        });
+}
+
+// Função para enviar comentário
+async function submitComment() {
+    const commentInput = document.getElementById('commentInput');
+    const text = commentInput.value.trim();
+    
+    if (!text || !currentMessageId) return;
+
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+
+    try {
+        await db.collection('comments').doc(currentMessageId).collection('messages').add({
+            text: text,
+            userEmail: user.email,
+            userId: user.uid,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        commentInput.value = '';
+    } catch (error) {
+        console.error("Erro ao adicionar comentário:", error);
+    }
+}
+
+// Função para curtir/descurtir
+async function toggleLike(messageId) {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+
+    const likeRef = db.collection('likes').doc(`${messageId}_${user.uid}`);
+
+    try {
+        const doc = await likeRef.get();
+        if (doc.exists) {
+            await likeRef.delete();
+            updateLikeCount(messageId, -1);
+        } else {
+            await likeRef.set({
+                messageId: messageId,
+                userId: user.uid,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            updateLikeCount(messageId, 1);
+        }
+    } catch (error) {
+        console.error("Erro ao curtir:", error);
+    }
+}
+
+// Função para atualizar contador de curtidas
+function updateLikeCount(messageId, change) {
+    const likeCountElement = document.querySelector(`.message-container[data-message-id="${messageId}"] .like-count`);
+    if (likeCountElement) {
+        const currentCount = parseInt(likeCountElement.textContent) || 0;
+        likeCountElement.textContent = currentCount + change;
+    }
+}
+
+// Carregar contagem de curtidas inicial
+function loadInitialLikes() {
+    document.querySelectorAll('.message-container').forEach(container => {
+        const messageId = container.dataset.messageId;
+        const likeCountElement = container.querySelector('.like-count');
+        
+        // Verificar se o usuário atual curtiu
+        const user = firebase.auth().currentUser;
+        if (user) {
+            db.collection('likes').doc(`${messageId}_${user.uid}`).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        container.querySelector('.like-btn').classList.add('liked');
+                    }
+                });
+        }
+
+        // Contar total de curtidas
+        db.collection('likes').where('messageId', '==', messageId).get()
+            .then(snapshot => {
+                likeCountElement.textContent = snapshot.size;
+            });
+    });
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Comentários
+    document.querySelectorAll('.comment-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const messageId = this.closest('.message-container').dataset.messageId;
+            openCommentModal(messageId);
+        });
+    });
+
+    // Curtidas
+    document.querySelectorAll('.like-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const messageId = this.closest('.message-container').dataset.messageId;
+            toggleLike(messageId);
+            this.classList.toggle('liked');
+        });
+    });
+
+    // Fechar modal de comentários
+    document.querySelector('.close-comment-modal').addEventListener('click', closeCommentModal);
+    
+    // Enviar comentário
+    document.getElementById('submitComment').addEventListener('click', submitComment);
+    
+    // Enviar comentário com Enter
+    document.getElementById('commentInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') submitComment();
+    });
+
+    // Carregar curtidas quando o usuário logar
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            loadInitialLikes();
+        }
+    });
+});

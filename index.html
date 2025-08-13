@@ -107,8 +107,8 @@
             <h2>Mensagens para você</h2>
             <p class="modal-subtitle">Cada palavra foi pensada com muito carinho</p>
 
-                <div class="message-container">
-                        <div class="message-header" onclick="toggleMessage(this)">
+                <div class="message-container" data-message-id="julho2025">
+                        <div class="message-header">
                             <span>💌 JULHO 2025</span> 
                             <span class="arrow">▶</span>
                         </div>
@@ -118,12 +118,27 @@
                         <p style="text-align: justify;">A gente tem uma conexão que só nós entendemos. Você tem o mesmo senso de humor que eu, e isso faz tudo ser leve. Eu te admiro tanto, Eris.</p>
                         <p style="text-align: justify;">Hoje, só quero te dizer que... Vou escolher você todos os dias. Vou te amar com leveza nos dias bons e com força nos dias ruins.<br>Vou regar o nosso amor todos os dias, como quem cuida do que tem de mais precioso no mundo.<br>
                           Prometo ser teu abrigo... teu protetor, tua paz. Porque eu nasci para estar com você!<br> E sou grata a Deus por ter cruzado meu caminho com o teu.</p>
-                        <p style="text-align: center;"><strong>Te amo infinitamente, FEDORENTA!</p></strong>
+                        <p style="text-align: center;"><strong>Te amo infinitamente, FEDORENTA!</p></strong> 
+                        <div class="message-actions">
+                            <button class="like-btn">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                                </svg>
+                                <span class="like-count">0</span>
+                            </button>
+    
+                            <button class="comment-btn">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"></path>
+                                </svg>
+                                <span class="comment-count">0</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="message-container">
-                        <div class="message-header" onclick="toggleMessage(this)">
+                <div class="message-container" data-message-id="agosto2025">
+                        <div class="message-header">
                             <span>💌 AGOSTO 2025</span> 
                             <span class="arrow">▶</span>
                         </div>
@@ -135,6 +150,21 @@
                         <br>Até lá, só me resta te provocar, te deixar louca de vontade e lembrar todo dia que essa espera só vai fazer a gente explodir quando finalmente estivermos no mesmo lugar.  Ah! E fica aí me devendo uns beijos ...</p>
                         <p style="text-align: center;"><strong>Te amo, mas hoje tá difícil ser só amor. ❤️🔥
                         <br>SOU COMPLETAMENTE APAIXONADA POR VOCÊ!</p></strong>
+                        <div class="message-actions">
+                            <button class="like-btn">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                                </svg>
+                                <span class="like-count">0</span>
+                            </button>
+    
+                            <button class="comment-btn">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"></path>
+                                </svg>
+                                <span class="comment-count">0</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -399,10 +429,13 @@
             </div>
         </div>
     </div>
-    
-    <div class="overlay hidden"></div>
-    
+
+
+<!-- Overlay para o popup -->
+    <div class="overlay"></div>
     <!-- Adicione isso antes do seu script.js -->
+   
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script>
@@ -434,5 +467,19 @@
         <i class="fas fa-music">
         <span id="musicStatus">Tocar</span>
     </button>
+
+    <!-- Modal de Comentários -->
+    <div class="comment-modal hidden" id="commentModal">
+        <div class="comment-modal-content">
+            <button class="close-comment-modal">&times;</button>
+            <h3>Comentários</h3>
+            <div class="comments-list" id="commentsList"></div>
+            <div class="comment-input-container">
+                <input type="text" id="commentInput" placeholder="Adicione um comentário...">
+                <button id="submitComment">Enviar</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
