@@ -998,16 +998,6 @@ body.dark-mode .hq-trigger {
   background: linear-gradient(135deg, #e05294 0%, #8a2be2 100%);
 }
 
-/* Animação sutil */
-@keyframes pulse {
-  0% { opacity: 0.95; }
-  50% { opacity: 1; }
-  100% { opacity: 0.95; }
-}
-
-.hq-trigger {
-  animation: pulse 4s infinite;
-}
 
 /* Ajustes Específicos para Desktop */
 @media (min-width: 768px) {
