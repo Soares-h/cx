@@ -435,11 +435,12 @@
     <div class="overlay"></div>
     <!-- Adicione isso antes do seu script.js -->
    
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    <script>
-  // Sua configuração do Firebase
+    <!-- ANTES do seu script.js -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+<script>
+// Sua configuração do Firebase
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
             apiKey: "AIzaSyA4_ozx0r-8IkP7cZI88_3JFTgH7w9NMNU",
@@ -477,8 +478,16 @@
             <div class="comment-input-container">
                 <input type="text" id="commentInput" placeholder="Adicione um comentário...">
                 <button id="submitComment">Enviar</button>
-            </div>
+            </div> 
         </div>
+        <div class="comment" data-comment-id="ID_DO_COMENTARIO">
+            <div class="comment-header">
+                <span class="comment-user">Usuário</span>
+                <span class="comment-time">13/08/2025, 20:28</span>
+                <button class="delete-comment-btn" title="Deletar">🗑️</button>
+            </div>
+            <div class="comment-text">Texto do comentário...</div>
+        </div>   
     </div>
 
 </body>

@@ -431,6 +431,7 @@ function openCommentModal(messageId) {
     currentMessageId = messageId;
     const modal = document.getElementById('commentModal');
     modal.classList.add('active');
+    document.body.classList.add('no-scroll'); // Impede scroll da página quando modal está aberto
     loadComments(messageId);
 }
 
@@ -438,19 +439,32 @@ function openCommentModal(messageId) {
 function closeCommentModal() {
     const modal = document.getElementById('commentModal');
     modal.classList.remove('active');
+    document.body.classList.remove('no-scroll');
     currentMessageId = null;
+}
+
+// Função para formatar data
+function formatDate(date) {
+    if (!date) return '';
+    return new Date(date).toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 }
 
 // Função para carregar comentários
 function loadComments(messageId) {
     const commentsList = document.getElementById('commentsList');
-    commentsList.innerHTML = '<p>Carregando comentários...</p>';
+    commentsList.innerHTML = '<p class="loading-msg">Carregando comentários...</p>';
 
     db.collection('comments').doc(messageId).collection('messages')
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
             if (snapshot.empty) {
-                commentsList.innerHTML = '<p>Nenhum comentário ainda. Seja o primeiro!</p>';
+                commentsList.innerHTML = '<p class="no-comments">Nenhum comentário ainda. Seja o primeiro!</p>';
                 return;
             }
 
@@ -460,11 +474,17 @@ function loadComments(messageId) {
                 const commentElement = document.createElement('div');
                 commentElement.className = 'comment';
                 commentElement.innerHTML = `
-                    <div class="comment-user">${comment.userEmail}</div>
+                    <div class="comment-header">
+                        <span class="comment-user">${comment.userEmail || 'Usuário'}</span>
+                        <span class="comment-time">${formatDate(comment.timestamp?.toDate())}</span>
+                    </div>
                     <div class="comment-text">${comment.text}</div>
                 `;
                 commentsList.appendChild(commentElement);
             });
+        }, error => {
+            console.error("Erro ao carregar comentários:", error);
+            commentsList.innerHTML = '<p class="error-msg">Erro ao carregar comentários</p>';
         });
 }
 
@@ -473,29 +493,58 @@ async function submitComment() {
     const commentInput = document.getElementById('commentInput');
     const text = commentInput.value.trim();
     
-    if (!text || !currentMessageId) return;
+    if (!text) {
+        alert('Por favor, digite um comentário!');
+        return;
+    }
 
+    if (!currentMessageId) {
+        alert('Erro: Mensagem não identificada. Recarregue a página.');
+        return;
+    }
+
+    // Verifica autenticação do usuário
     const user = firebase.auth().currentUser;
-    if (!user) return;
+    if (!user) {
+        try {
+            // Tenta autenticar anonimamente se não estiver logado
+            await firebase.auth().signInAnonymously();
+        } catch (authError) {
+            console.error("Erro de autenticação:", authError);
+            alert('Erro ao autenticar. Tente novamente.');
+            return;
+        }
+    }
 
     try {
         await db.collection('comments').doc(currentMessageId).collection('messages').add({
             text: text,
-            userEmail: user.email,
-            userId: user.uid,
+            userEmail: user?.email || 'Anônimo',
+            userId: user?.uid || 'anonymous',
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
         commentInput.value = '';
     } catch (error) {
         console.error("Erro ao adicionar comentário:", error);
+        alert('Erro ao enviar comentário. Tente novamente.');
     }
 }
 
 // Função para curtir/descurtir
-async function toggleLike(messageId) {
+async function toggleLike(messageId, button) {
+    // Verifica autenticação do usuário
     const user = firebase.auth().currentUser;
-    if (!user) return;
+    if (!user) {
+        try {
+            // Tenta autenticar anonimamente se não estiver logado
+            await firebase.auth().signInAnonymously();
+        } catch (authError) {
+            console.error("Erro de autenticação:", authError);
+            alert('Erro ao autenticar. Tente novamente.');
+            return;
+        }
+    }
 
     const likeRef = db.collection('likes').doc(`${messageId}_${user.uid}`);
 
@@ -503,6 +552,7 @@ async function toggleLike(messageId) {
         const doc = await likeRef.get();
         if (doc.exists) {
             await likeRef.delete();
+            button.classList.remove('liked');
             updateLikeCount(messageId, -1);
         } else {
             await likeRef.set({
@@ -510,11 +560,25 @@ async function toggleLike(messageId) {
                 userId: user.uid,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
+            button.classList.add('liked');
             updateLikeCount(messageId, 1);
         }
     } catch (error) {
         console.error("Erro ao curtir:", error);
+        alert('Ocorreu um erro ao curtir. Tente novamente.');
     }
+
+    // No final da função toggleLike():
+if (!doc.exists) { // Quando curtir
+    import('https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js')
+        .then(() => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        });
+}
 }
 
 // Função para atualizar contador de curtidas
@@ -522,69 +586,121 @@ function updateLikeCount(messageId, change) {
     const likeCountElement = document.querySelector(`.message-container[data-message-id="${messageId}"] .like-count`);
     if (likeCountElement) {
         const currentCount = parseInt(likeCountElement.textContent) || 0;
-        likeCountElement.textContent = currentCount + change;
+        likeCountElement.textContent = Math.max(0, currentCount + change);
     }
 }
 
 // Carregar contagem de curtidas inicial
-function loadInitialLikes() {
-    document.querySelectorAll('.message-container').forEach(container => {
-        const messageId = container.dataset.messageId;
-        const likeCountElement = container.querySelector('.like-count');
-        
-        // Verificar se o usuário atual curtiu
+async function loadInitialLikes() {
+    try {
         const user = firebase.auth().currentUser;
-        if (user) {
-            db.collection('likes').doc(`${messageId}_${user.uid}`).get()
-                .then(doc => {
-                    if (doc.exists) {
-                        container.querySelector('.like-btn').classList.add('liked');
-                    }
-                });
-        }
+        if (!user) return;
 
-        // Contar total de curtidas
-        db.collection('likes').where('messageId', '==', messageId).get()
-            .then(snapshot => {
-                likeCountElement.textContent = snapshot.size;
-            });
-    });
+        const containers = document.querySelectorAll('.message-container');
+        
+        for (const container of containers) {
+            const messageId = container.dataset.messageId;
+            const likeButton = container.querySelector('.like-btn');
+            const likeCountElement = container.querySelector('.like-count');
+            
+            try {
+                // Verifica se o usuário curtiu
+                const likeDoc = await db.collection('likes').doc(`${messageId}_${user.uid}`).get();
+                if (likeDoc.exists) {
+                    likeButton.classList.add('liked');
+                }
+
+                // Conta total de curtidas
+                const likesSnapshot = await db.collection('likes')
+                    .where('messageId', '==', messageId)
+                    .get();
+                    
+                likeCountElement.textContent = likesSnapshot.size;
+            } catch (error) {
+                console.error(`Erro ao carregar curtidas para mensagem ${messageId}:`, error);
+            }
+        }
+    } catch (error) {
+        console.error("Erro geral ao carregar curtidas:", error);
+    }
 }
 
-// Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
-    // Comentários
-    document.querySelectorAll('.comment-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const messageId = this.closest('.message-container').dataset.messageId;
+// Configura os event listeners para os botões de uma mensagem específica
+function setupMessageListeners(messageContainer) {
+    const messageId = messageContainer.dataset.messageId;
+    
+    // Listener para curtir
+    const likeButton = messageContainer.querySelector('.like-btn');
+    if (likeButton) {
+        likeButton.addEventListener('click', function() {
+            toggleLike(messageId, this);
+        });
+    }
+    
+    // Listener para comentar
+    const commentButton = messageContainer.querySelector('.comment-btn');
+    if (commentButton) {
+        commentButton.addEventListener('click', function() {
             openCommentModal(messageId);
         });
-    });
+    }
+}
 
-    // Curtidas
-    document.querySelectorAll('.like-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const messageId = this.closest('.message-container').dataset.messageId;
-            toggleLike(messageId);
-            this.classList.toggle('liked');
-        });
-    });
-
+// Configura todos os event listeners quando o modal de mensagens é aberto
+function setupModalListeners() {
     // Fechar modal de comentários
-    document.querySelector('.close-comment-modal').addEventListener('click', closeCommentModal);
+    const closeButton = document.querySelector('.close-comment-modal');
+    if (closeButton) {
+        closeButton.addEventListener('click', closeCommentModal);
+    }
     
     // Enviar comentário
-    document.getElementById('submitComment').addEventListener('click', submitComment);
+    const submitButton = document.getElementById('submitComment');
+    if (submitButton) {
+        submitButton.addEventListener('click', submitComment);
+    }
     
     // Enviar comentário com Enter
-    document.getElementById('commentInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') submitComment();
-    });
+    const commentInput = document.getElementById('commentInput');
+    if (commentInput) {
+        commentInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') submitComment();
+        });
+    }
 
-    // Carregar curtidas quando o usuário logar
+// Adicione este evento no setupModalListeners():
+document.querySelectorAll('.delete-comment-btn').forEach(btn => {
+    btn.addEventListener('click', async function() {
+        const commentId = this.closest('.comment').dataset.commentId;
+        if (confirm("Tem certeza que quer deletar este comentário?")) {
+            try {
+                await db.collection('comments').doc(currentMessageId)
+                    .collection('messages').doc(commentId).delete();
+            } catch (error) {
+                console.error("Erro ao deletar:", error);
+            }
+        }
+    });
+});    
+    
+    // Configura listeners para cada mensagem
+    document.querySelectorAll('.message-container').forEach(setupMessageListeners);
+}
+
+// Inicialização quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', () => {
+    // Configura listeners globais
+    setupModalListeners();
+    
+    // Configura observador de autenticação
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
             loadInitialLikes();
+        } else {
+            // Opcional: autenticação anônima automática
+            firebase.auth().signInAnonymously().catch(error => {
+                console.error("Erro na autenticação anônima:", error);
+            });
         }
     });
 });

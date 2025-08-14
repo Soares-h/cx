@@ -1521,19 +1521,19 @@ body.dark-mode .hq-trigger {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 9999; /* Garante que está acima de tudo */
     opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
+    display: none; /* Inicialmente escondido */
+    transition: opacity 0.3s ease;
 }
 
 .comment-modal.active {
     opacity: 1;
-    visibility: visible;
+    display: flex; /* Mostra o modal */
 }
 
 .comment-modal-content {
@@ -1541,93 +1541,153 @@ body.dark-mode .hq-trigger {
     border-radius: 15px;
     width: 90%;
     max-width: 500px;
-    max-height: 70vh;
+    height: 70vh; /* Altura fixa */
     padding: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
+    position: relative;
+    font-family: 'Montserrat', sans-serif !important; 
 }
 
+/* Cabeçalho do Modal */
 .comment-modal h3 {
-    margin-bottom: 15px;
+    margin: 0 0 15px 0;
+    font-size: 2rem;
+    font-family: 'Pacifico', cursive !important; /* Fonte romântica */
+    font-size: 2rem;
+    text-align: center;
+    color: var(--primary-color) !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+/* Botão de fechar */
+.close-comment-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: transform 0.2s ease;
+    z-index: 1;
+}
+
+.close-comment-modal:hover {
+    transform: scale(1.2);
     color: var(--primary-color);
 }
 
+/* Lista de Comentários */
 .comments-list {
     flex: 1;
     overflow-y: auto;
-    margin-bottom: 15px;
-    padding-right: 10px;
+    margin: 15px 0;
+    padding-right: 5px; /* Espaço para scroll */
 }
 
+/* Barra de rolagem personalizada */
+.comments-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 3px;
+}
+
+/* Estilos dos Comentários */
 .comment {
     background-color: var(--bg-color);
-    padding: 10px 15px;
-    border-radius: 18px;
-    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-radius: 12px;
+    margin-bottom: 12px;
     word-break: break-word;
+    border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+}
+
+.comment-header {
+    display: flex !important; 
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 8px !important;
+    width: 100% !important;
+    position: relative;
 }
 
 .comment-user {
     font-weight: bold;
     color: var(--primary-color);
-    margin-bottom: 5px;
+    order: 1;
+    margin-right: auto !important;
+    font-size: 0.9rem;
+}
+
+.comment-time {
+    font-size: 0.75rem;
+    color: #777;
+    opacity: 0.8;
 }
 
 .comment-text {
-    font-size: 0.95rem;
+    margin-top: 5px;
+    padding-left: 5px;
+    line-height: 1.4;
+    word-break: break-word;
 }
 
+/* Área de Input */
 .comment-input-container {
     display: flex;
     gap: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    border-top: 1px solid rgba(var(--primary-color-rgb), 0.2);
+    align-items: center;
 }
 
 .comment-input-container input {
     flex: 1;
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: 1px solid #ddd;
+    padding: 12px 15px;
+    border-radius: 25px;
+    border: 1px solid rgba(var(--primary-color-rgb), 0.3);
     background-color: var(--bg-color);
     color: var(--text-color);
+    font-size: 0.95rem;
+    transition: border 0.3s ease;
+}
+
+.comment-input-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
 }
 
 .comment-input-container button {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 0 20px;
+    border-radius: 25px;
+    padding: 12px 20px;
     cursor: pointer;
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .comment-input-container button:hover {
     background-color: var(--hover-color);
+    transform: translateY(-2px);
 }
 
-.close-comment-modal {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--text-color);
-}
-
-.like-btn.liked path {
-    fill: #e83e8c;
-}
-
-/* Adicione estas regras */
+/* Botões de Like/Comentário */
 .message-actions {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     margin-top: 20px;
     padding-top: 15px;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(var(--primary-color-rgb), 0.1);
     justify-content: center;
 }
 
@@ -1636,120 +1696,128 @@ body.dark-mode .hq-trigger {
     border: none;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     cursor: pointer;
     color: var(--text-color);
     transition: all 0.3s ease;
-    padding: 5px 10px;
-    border-radius: 20px;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 0.95rem;
 }
 
 .like-btn:hover, .comment-btn:hover {
-    background-color: rgba(0,0,0,0.05);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    transform: translateY(-2px);
 }
 
 .like-btn svg, .comment-btn svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
 }
 
-.like-btn.liked, .like-btn.liked svg {
+.like-btn.liked {
     color: var(--primary-color);
+}
+
+.like-btn.liked svg {
     fill: var(--primary-color);
+    animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
 }
 
 .like-count, .comment-count {
     font-size: 0.9rem;
     font-weight: 500;
-}
-.message-container {
-    margin: 1.5rem 0;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px var(--shadow-color);
-    background-color: var(--card-bg);
-    transition: all 0.3s ease;
-}
-
-.message-header {
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    background-color: rgba(var(--primary-color-rgb), 0.1);
-    transition: all 0.3s ease;
-}
-
-.message-header:hover {
-    background-color: rgba(var(--primary-color-rgb), 0.2);
-}
-
-.message-header span:first-child {
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-.arrow {
-    transition: transform 0.3s ease;
-}
-
-.message-content {
-    padding: 0 20px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-}
-
-.message-content.open {
-    padding: 20px;
-    max-height: 2000px;
-}
-
-.message-content h4 {
-    color: var(--primary-color);
-    margin-bottom: 15px;
+    min-width: 20px;
     text-align: center;
-    font-size: 1.3rem;
 }
 
-.message-content p {
-    margin-bottom: 15px;
-    line-height: 1.6;
-}
-
-:root {
-    --primary-color-rgb: 232, 62, 140; /* RGB do primary-color */
-    /* ... outras variáveis existentes ... */
-}
-
-.dark-mode {
-    --primary-color-rgb: 255, 107, 157; /* RGB do primary-color no dark mode */
-    /* ... outras variáveis existentes ... */
-}
-
-.signature {
+/* Mensagens de estado */
+.loading-msg, .no-comments, .error-msg {
     text-align: center;
-    font-style: italic;
-    margin-top: 20px;
-    color: var(--primary-color);
+    padding: 30px 20px;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.95rem;
 }
 
-@media (max-width: 768px) {
-    .message-header {
-        padding: 12px 15px;
-    }
-    
-    .message-content {
-        padding: 0 15px;
-    }
-    
-    .message-content.open {
+/* Responsividade */
+@media (max-width: 600px) {
+    .comment-modal-content {
+        width: 95%;
+        height: 80vh;
         padding: 15px;
+    }
+    
+    .comment-input-container {
+        flex-direction: column;
+    }
+    
+    .comment-input-container input {
+        width: 100%;
+    }
+    
+    .comment-input-container button {
+        width: 100%;
     }
     
     .message-actions {
         gap: 10px;
     }
+    
+    .like-btn, .comment-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
+:root {
+    --primary-color-rgb: 232, 62, 140; /* Corresponde ao --primary-color em RGB */
+    --hover-color: #d42d7b; /* Cor para hover (pode ajustar) */
+}
+
+/* No final do seu CSS */
+.like-btn svg, 
+.comment-btn svg {
+    fill: var(--primary-color) !important; /* Cor dos ícones */
+}
+
+.like-btn, 
+.comment-btn {
+    color: var(--primary-color) !important; /* Cor dos números */
+}
+
+.like-btn.liked svg {
+    animation: heartBeat 0.8s ease;
+    fill: #e83e8c !important; /* Cor quando curtido */
+}
+
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.3); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.delete-comment-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff6b6b;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.delete-comment-btn:hover {
+    transform: scale(1.2);
+    color: #e83e8c;
 }
