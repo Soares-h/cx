@@ -513,18 +513,8 @@ async function submitComment() {
 
 // Função para curtir/descurtir
 async function toggleLike(messageId, button) {
-    // Verifica autenticação do usuário
     const user = firebase.auth().currentUser;
-    if (!user) {
-        try {
-            // Tenta autenticar anonimamente se não estiver logado
-            await firebase.auth().signInAnonymously();
-        } catch (authError) {
-            console.error("Erro de autenticação:", authError);
-            alert('Erro ao autenticar. Tente novamente.');
-            return;
-        }
-    }
+    if (!user) return alert("Faça login para curtir!");
 
     const likeRef = db.collection('likes').doc(`${messageId}_${user.uid}`);
 
@@ -542,11 +532,15 @@ async function toggleLike(messageId, button) {
             });
             button.classList.add('liked');
             updateLikeCount(messageId, 1);
+            
+            // Efeito de confete (opcional)
+            import('https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js')
+                .then(() => confetti({ particleCount: 50, spread: 70 }));
         }
     } catch (error) {
         console.error("Erro ao curtir:", error);
-        alert('Ocorreu um erro ao curtir. Tente novamente.');
     }
+
 
     // No final da função toggleLike():
 if (!doc.exists) { // Quando curtir
