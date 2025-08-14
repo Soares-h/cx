@@ -486,26 +486,28 @@ function loadComments(messageId) {
 async function submitComment() {
     const commentInput = document.getElementById('commentInput');
     const text = commentInput.value.trim();
-    
-    if (!text) return alert('Digite um comentário!');
+    if (!text) return;
 
-    // Pede um nickname se for usuário anônimo
-    let userName = firebase.auth().currentUser?.displayName;
-    if (!userName) {
-        userName = prompt("Como devemos te chamar?") || 'Anônimo';
-    }
+    const user = firebase.auth().currentUser;
+    if (!user) return alert("Faça login para comentar!");
+
+    // Define os nomes baseados no e-mail (personalize com seus dados)
+    const userNames = {
+        'thatslanna@gmail.com': 'HK',
+        'erissanttioresm@gmail.com': 'Eris'
+    };
 
     try {
         await db.collection('comments').doc(currentMessageId).collection('messages').add({
             text: text,
-            userName: userName,  // Usa o nome em vez do e-mail
-            userId: firebase.auth().currentUser?.uid || 'anonymous',
+            userName: userNames[user.email] || user.email, // Usa o nome ou o e-mail
+            userEmail: user.email, // Salva o e-mail para referência
+            userId: user.uid,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         commentInput.value = '';
     } catch (error) {
-        console.error("Erro:", error);
-        alert('Erro ao enviar. Tente novamente!');
+        alert("Erro ao enviar. Tente novamente!");
     }
 }
 
