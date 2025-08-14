@@ -458,33 +458,27 @@ function formatDate(date) {
 // Função para carregar comentários
 function loadComments(messageId) {
     const commentsList = document.getElementById('commentsList');
-    commentsList.innerHTML = '<p class="loading-msg">Carregando comentários...</p>';
+    commentsList.innerHTML = '<p class="loading-msg">Carregando...</p>';
 
     db.collection('comments').doc(messageId).collection('messages')
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
-            if (snapshot.empty) {
-                commentsList.innerHTML = '<p class="no-comments">Nenhum comentário ainda. Seja o primeiro!</p>';
-                return;
-            }
-
             commentsList.innerHTML = '';
             snapshot.forEach(doc => {
                 const comment = doc.data();
                 const commentElement = document.createElement('div');
                 commentElement.className = 'comment';
+                commentElement.dataset.commentId = doc.id; // <-- Isso é ESSENCIAL!
                 commentElement.innerHTML = `
                     <div class="comment-header">
-                        <span class="comment-user">${comment.userEmail || 'Usuário'}</span>
-                        <span class="comment-time">${formatDate(comment.timestamp?.toDate())}</span>
+                        <strong>${comment.userName}</strong>
+                        <button class="delete-comment-btn">🗑️</button>
                     </div>
-                    <div class="comment-text">${comment.text}</div>
+                    <p class="comment-text">${comment.text}</p>
+                    <small class="comment-date">${formatDate(comment.timestamp?.toDate())}</small>
                 `;
                 commentsList.appendChild(commentElement);
             });
-        }, error => {
-            console.error("Erro ao carregar comentários:", error);
-            commentsList.innerHTML = '<p class="error-msg">Erro ao carregar comentários</p>';
         });
 }
 
@@ -493,41 +487,25 @@ async function submitComment() {
     const commentInput = document.getElementById('commentInput');
     const text = commentInput.value.trim();
     
-    if (!text) {
-        alert('Por favor, digite um comentário!');
-        return;
-    }
+    if (!text) return alert('Digite um comentário!');
 
-    if (!currentMessageId) {
-        alert('Erro: Mensagem não identificada. Recarregue a página.');
-        return;
-    }
-
-    // Verifica autenticação do usuário
-    const user = firebase.auth().currentUser;
-    if (!user) {
-        try {
-            // Tenta autenticar anonimamente se não estiver logado
-            await firebase.auth().signInAnonymously();
-        } catch (authError) {
-            console.error("Erro de autenticação:", authError);
-            alert('Erro ao autenticar. Tente novamente.');
-            return;
-        }
+    // Pede um nickname se for usuário anônimo
+    let userName = firebase.auth().currentUser?.displayName;
+    if (!userName) {
+        userName = prompt("Como devemos te chamar?") || 'Anônimo';
     }
 
     try {
         await db.collection('comments').doc(currentMessageId).collection('messages').add({
             text: text,
-            userEmail: user?.email || 'Anônimo',
-            userId: user?.uid || 'anonymous',
+            userName: userName,  // Usa o nome em vez do e-mail
+            userId: firebase.auth().currentUser?.uid || 'anonymous',
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
-
         commentInput.value = '';
     } catch (error) {
-        console.error("Erro ao adicionar comentário:", error);
-        alert('Erro ao enviar comentário. Tente novamente.');
+        console.error("Erro:", error);
+        alert('Erro ao enviar. Tente novamente!');
     }
 }
 
@@ -669,19 +647,38 @@ function setupModalListeners() {
     }
 
 // Adicione este evento no setupModalListeners():
-document.querySelectorAll('.delete-comment-btn').forEach(btn => {
-    btn.addEventListener('click', async function() {
-        const commentId = this.closest('.comment').dataset.commentId;
-        if (confirm("Tem certeza que quer deletar este comentário?")) {
+    document.querySelectorAll('.delete-comment-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const commentId = this.closest('.comment').dataset.commentId;
+            if (confirm("Tem certeza que quer deletar este comentário?")) {
+                try {
+                    await db.collection('comments').doc(currentMessageId)
+                        .collection('messages').doc(commentId).delete();
+                } catch (error) {
+                    console.error("Erro ao deletar:", error);
+                }
+            }
+    });
+        
+
+    // Substitua o listener antigo por este:
+document.addEventListener('click', async (e) => {
+    if (e.target.classList.contains('delete-comment-btn')) {
+        const commentElement = e.target.closest('.comment');
+        const commentId = commentElement.dataset.commentId;
+        
+        if (confirm("Tem certeza que quer deletar?")) {
             try {
                 await db.collection('comments').doc(currentMessageId)
                     .collection('messages').doc(commentId).delete();
             } catch (error) {
                 console.error("Erro ao deletar:", error);
+                alert("Erro ao deletar. Atualize a página e tente novamente!");
             }
         }
-    });
-});    
+    }
+});
+});
     
     // Configura listeners para cada mensagem
     document.querySelectorAll('.message-container').forEach(setupMessageListeners);
@@ -703,4 +700,25 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+});
+
+// Função para deletar comentários
+async function deleteComment(commentId) {
+    if (!confirm("Tem certeza que quer deletar?")) return;
+    
+    try {
+        await db.collection('comments').doc(currentMessageId)
+            .collection('messages').doc(commentId).delete();
+    } catch (error) {
+        console.error("Erro ao deletar:", error);
+        alert("Erro ao deletar. Recarregue a página e tente novamente!");
+    }
+}
+
+// Listener para a lixeira (adicione isso no setupModalListeners())
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('delete-comment-btn')) {
+        const commentId = e.target.closest('.comment').dataset.commentId;
+        deleteComment(commentId);
+    }
 });

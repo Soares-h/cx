@@ -1602,21 +1602,23 @@ body.dark-mode .hq-trigger {
 
 /* Estilos dos Comentários */
 .comment {
-    background-color: var(--bg-color);
-    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px;
     border-radius: 12px;
     margin-bottom: 12px;
     word-break: break-word;
     border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+    position: relative;
 }
 
 .comment-header {
-    display: flex !important; 
-    justify-content: space-between !important;
-    align-items: center !important;
-    margin-bottom: 8px !important;
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
     width: 100% !important;
     position: relative;
+    padding-right: 25px;
 }
 
 .comment-user {
@@ -1806,18 +1808,25 @@ body.dark-mode .hq-trigger {
 }
 
 .delete-comment-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
     background: none;
     border: none;
-    cursor: pointer;
     color: #ff6b6b;
-    font-size: 1rem;
-    transition: transform 0.2s;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
 }
 
 .delete-comment-btn:hover {
     transform: scale(1.2);
     color: #e83e8c;
+    opacity: 1;
+}
+
+.comment-date {
+    font-size: 0.7rem;
+    color: #999;
+    display: block;
+    margin-top: 5px;
+    text-align: right;
 }
