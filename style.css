@@ -1618,9 +1618,7 @@ body.dark-mode .hq-trigger {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
-    width: 100% !important;
     position: relative;
-    padding-right: 25px;
 }
 
 .comment-user {
@@ -1814,13 +1812,14 @@ body.dark-mode .hq-trigger {
     border: none;
     color: #ff6b6b;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     padding: 5px;
     position: absolute;
     right: 10px;
     top: 10px;
     opacity: 0.7;
     transition: opacity 0.2s;
+    margin-left: 10px; /* Distância do nome */
 }
 
 .delete-comment-btn:hover {
