@@ -1824,3 +1824,27 @@ body.dark-mode .hq-trigger {
     margin-top: 5px;
     text-align: right;
 }
+
+
+/*filmes*/
+/* Estilo das abas (igual ao das mensagens) */
+.movie-tabs {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.tab-button {
+    background: var(--card-bg);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.tab-button.active {
+    background: var(--primary-color);
+    color: white;
+}
+
