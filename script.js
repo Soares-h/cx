@@ -718,3 +718,479 @@ document.addEventListener('click', (e) => {
         deleteComment(commentId);
     }
 });
+
+// ===== SISTEMA DE FILMES COM SLIDER HORIZONTAL =====
+
+// Variáveis globais para o sistema de filmes
+let currentMovieCategory = 'watched';
+let currentSlide = 0;
+let moviesPerView = 4;
+
+// Inicializar o sistema de filmes
+function initializeMoviesSystem() {
+    // Configurar clique no card de filmes
+    const moviesCard = document.getElementById('moviesCard');
+    if (moviesCard) {
+        moviesCard.addEventListener('click', openMoviesModal);
+    }
+    
+    // Configurar abas
+    setupMovieTabs();
+    
+    // Configurar formulário
+    setupMovieForm();
+    
+    // Configurar setas do slider
+    setupSliderArrows();
+    
+    // Verificar responsividade
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+}
+
+function checkScreenSize() {
+    const width = window.innerWidth;
+    console.log('Largura da tela:', width, 'px');
+    
+    if (width <= 480) {
+        moviesPerView = 1; // 1 filme no mobile
+    } else if (width <= 768) {
+        moviesPerView = 2; // 2 filmes no tablet
+    } else {
+        moviesPerView = 3; // 3 filmes no desktop
+    }
+    
+    console.log('Filmes por view:', moviesPerView);
+    
+    // Atualizar slider se já estiver carregado
+    if (document.getElementById('moviesContainer').children.length > 0) {
+        currentSlide = 0; // Reset para o primeiro slide
+        updateSlider();
+        updateSliderArrows();
+    }
+}
+
+function setupSliderArrows() {
+    const leftArrow = document.querySelector('.slider-arrow-left');
+    const rightArrow = document.querySelector('.slider-arrow-right');
+    
+    if (leftArrow) leftArrow.addEventListener('click', () => moveSlider(-1));
+    if (rightArrow) rightArrow.addEventListener('click', () => moveSlider(1));
+}
+
+function moveSlider(direction) {
+    const moviesContainer = document.getElementById('moviesContainer');
+    if (!moviesContainer) return;
+    
+    const movieCards = moviesContainer.querySelectorAll('.movie-card, .movie-card-simple');
+    const totalMovies = movieCards.length;
+    
+    if (totalMovies === 0) return;
+    
+    // CÁLCULO CORRETO: máximo de slides baseado em grupos completos
+    const maxSlide = Math.max(0, Math.ceil(totalMovies / moviesPerView) - 1);
+    currentSlide = Math.max(0, Math.min(currentSlide + direction, maxSlide));
+    
+    console.log('Slider movido:', {
+        direction: direction,
+        currentSlide: currentSlide,
+        maxSlide: maxSlide,
+        totalMovies: totalMovies,
+        moviesPerView: moviesPerView
+    });
+    
+    updateSlider();
+}
+
+function updateSlider() {
+    const moviesContainer = document.getElementById('moviesContainer');
+    if (!moviesContainer) return;
+    
+    // CÁLCULO CORRETO: mover baseado no slide atual
+    const slideWidth = 100 / moviesPerView;
+    const transformValue = -currentSlide * 100; // 100% por grupo de filmes
+    
+    moviesContainer.style.transform = `translateX(${transformValue}%)`;
+    updateSliderArrows();
+}
+
+function updateSliderArrows() {
+    const leftArrow = document.querySelector('.slider-arrow-left');
+    const rightArrow = document.querySelector('.slider-arrow-right');
+    const moviesContainer = document.getElementById('moviesContainer');
+    
+    if (!moviesContainer || !leftArrow || !rightArrow) return;
+    
+    const movieCards = moviesContainer.querySelectorAll('.movie-card, .movie-card-simple');
+    const totalMovies = movieCards.length;
+    
+    // CÁLCULO CORRETO: máximo baseado na quantidade total
+    const maxSlide = Math.max(0, Math.ceil(totalMovies / moviesPerView) - 1);
+    
+    // Atualizar seta esquerda
+    if (currentSlide === 0) {
+        leftArrow.style.opacity = '0.3';
+        leftArrow.style.cursor = 'not-allowed';
+    } else {
+        leftArrow.style.opacity = '1';
+        leftArrow.style.cursor = 'pointer';
+    }
+    
+    // Atualizar seta direita
+    if (currentSlide >= maxSlide || totalMovies <= moviesPerView) {
+        rightArrow.style.opacity = '0.3';
+        rightArrow.style.cursor = 'not-allowed';
+    } else {
+        rightArrow.style.opacity = '1';
+        rightArrow.style.cursor = 'pointer';
+    }
+    
+    console.log('Setas atualizadas:', {
+        currentSlide: currentSlide,
+        maxSlide: maxSlide,
+        totalMovies: totalMovies,
+        moviesPerView: moviesPerView
+    });
+}
+
+function openMoviesModal() {
+    const moviesModal = document.getElementById('moviesModal');
+    if (moviesModal) {
+        openModal(moviesModal);
+        showMoviesView();
+        loadMovies(currentMovieCategory);
+    }
+}
+
+function setupMovieTabs() {
+    const tabButtons = document.querySelectorAll('.movie-tabs .tab-button');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.id === 'addMovieBtn') {
+                showMovieForm();
+                return;
+            }
+            
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            currentMovieCategory = this.dataset.category;
+            currentMovieType = this.dataset.type; // NOVO
+            currentSlide = 0;
+            
+            showMoviesView();
+            loadMovies(currentMovieCategory, currentMovieType); // ATUALIZADO
+        });
+    });
+}
+
+function setupMovieForm() {
+    const saveBtn = document.getElementById('saveMovieBtn');
+    const cancelBtn = document.getElementById('cancelMovieBtn');
+    const addBtn = document.getElementById('addMovieBtn');
+    
+    if (saveBtn) saveBtn.addEventListener('click', addNewMovie);
+    if (cancelBtn) cancelBtn.addEventListener('click', showMoviesView);
+    if (addBtn) addBtn.addEventListener('click', showMovieForm);
+}
+
+function showMoviesView() {
+    const form = document.getElementById('addMovieForm');
+    const sliderContainer = document.querySelector('.movies-slider-container');
+    
+    if (form) {
+        form.classList.remove('active');
+        form.classList.add('hidden');
+    }
+    if (sliderContainer) {
+        sliderContainer.style.display = 'block';
+    }
+    
+    // Reativar a aba ativa
+    const activeTab = document.querySelector(`.tab-button[data-category="${currentMovieCategory}"]`);
+    if (activeTab) {
+        activeTab.classList.add('active');
+    }
+}
+
+function showMovieForm() {
+    const form = document.getElementById('addMovieForm');
+    const sliderContainer = document.querySelector('.movies-slider-container');
+    
+    if (form) {
+        form.classList.add('active');
+        form.classList.remove('hidden');
+    }
+    if (sliderContainer) {
+        sliderContainer.style.display = 'none';
+    }
+    
+    // Desativar abas normais
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        if (btn.id !== 'addMovieBtn') {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // Ativar apenas o botão de adicionar
+    const addBtn = document.getElementById('addMovieBtn');
+    if (addBtn) addBtn.classList.add('active');
+    
+    resetMovieForm();
+}
+
+function resetMovieForm() {
+    document.getElementById('movieTitle').value = '';
+    document.getElementById('moviePoster').value = '';
+}
+
+// Função principal para carregar filmes
+async function loadMovies(category = 'watched', type = 'all') {
+    const moviesContainer = document.getElementById('moviesContainer');
+    if (!moviesContainer) return;
+    
+    moviesContainer.innerHTML = '<p class="loading-movies">Carregando...</p>';
+    moviesContainer.style.transform = 'translateX(0)';
+    currentSlide = 0;
+    
+    try {
+        let query = db.collection('movies');
+        
+        if (category !== 'all') {
+            query = query.where('category', '==', category);
+        }
+        
+        // NOVO: Filtro por tipo
+        if (type !== 'all') {
+            query = query.where('type', '==', type);
+        }
+        
+        const snapshot = await query.get();
+        
+        if (snapshot.empty) {
+            moviesContainer.innerHTML = '<p class="no-movies">Nenhum conteúdo encontrado.</p>';
+            updateSliderArrows();
+            return;
+        }
+        
+        moviesContainer.innerHTML = '';
+        
+        const movies = [];
+        snapshot.forEach(doc => {
+            movies.push({ id: doc.id, ...doc.data() });
+        });
+        
+        // Ordenar por data (mais recente primeiro)
+        movies.sort((a, b) => {
+            const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
+            const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
+            return dateB - dateA;
+        });
+        
+        // Criar elementos
+        movies.forEach(movie => {
+            if (category === 'watched') {
+                moviesContainer.appendChild(createWatchedMovieElement(movie));
+            } else {
+                moviesContainer.appendChild(createToWatchMovieElement(movie));
+            }
+        });
+        
+        // Atualizar slider
+        setTimeout(() => {
+            updateSlider();
+            updateSliderArrows();
+        }, 100);
+        
+    } catch (error) {
+        console.error('Erro ao carregar:', error);
+        moviesContainer.innerHTML = '<p class="no-movies">Erro ao carregar.</p>';
+        updateSliderArrows();
+    }
+}
+
+// Criar card para filmes ASSISTIDOS (completo)
+function createWatchedMovieElement(movie) {
+    const div = document.createElement('div');
+    div.className = 'movie-card';
+    div.dataset.id = movie.id;
+    
+    const posterUrl = movie.poster || 'https://via.placeholder.com/200x300/2c3e50/ecf0f1?text=Sem+Poster';
+    const myRating = movie.myRating || 0;
+    const herRating = movie.herRating || 0;
+    
+    div.innerHTML = `
+        <img src="${posterUrl}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://via.placeholder.com/200x300/2c3e50/ecf0f1?text=Erro+de+Imagem'">
+        <div class="movie-info">
+            <h3 class="movie-title">${movie.title}</h3>
+            
+            <div class="movie-rating-dual">
+                <div class="rating-group">
+                    <label>HK:</label>
+                    <div class="rating-stars" data-rater="myRating">
+                        ${createStarRating(myRating)}
+                    </div>
+                    <div class="rating-value">${myRating}/5</div>
+                </div>
+                
+                <div class="rating-group">
+                    <label>ES:</label>
+                    <div class="rating-stars" data-rater="herRating">
+                        ${createStarRating(herRating)}
+                    </div>
+                    <div class="rating-value">${herRating}/5</div>
+                </div>
+            </div>
+            
+            <div class="movie-actions">
+                <button class="movie-btn toggle-watched">
+                    <i class="fas fa-eye-slash"></i> Não Assistido
+                </button>
+                <button class="movie-btn delete-movie">
+                    <i class="fas fa-trash"></i> Excluir
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Configurar estrelas de avaliação (PARA AMBOS)
+    const ratingGroups = div.querySelectorAll('.rating-stars');
+    
+    ratingGroups.forEach(group => {
+        const raterType = group.dataset.rater;
+        const stars = group.querySelectorAll('i');
+        const ratingValue = group.nextElementSibling;
+        
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const newRating = parseInt(this.dataset.value);
+                updateMovieRating(movie.id, newRating, raterType);
+                
+                // Atualizar visualmente
+                stars.forEach((s, index) => {
+                    s.className = index < newRating ? 'fas fa-star active' : 'far fa-star';
+                });
+                ratingValue.textContent = `${newRating}/5`;
+                
+                alert('Avaliação salva com sucesso!');
+            });
+        });
+    });
+    
+    // Configurar outros botões
+    const toggleBtn = div.querySelector('.toggle-watched');
+    const deleteBtn = div.querySelector('.delete-movie');
+    
+    toggleBtn.addEventListener('click', () => toggleMovieStatus(movie, 'toWatch'));
+    deleteBtn.addEventListener('click', () => deleteMovie(movie.id));
+    
+    return div;
+}
+
+// Função auxiliar para criar estrelas de avaliação
+function createStarRating(rating) {
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+        starsHtml += `<i class="${rating >= i ? 'fas' : 'far'} fa-star" data-value="${i}"></i>`;
+    }
+    return starsHtml;
+}
+
+// Criar card para filmes NÃO ASSISTIDOS (simples)
+function createToWatchMovieElement(movie) {
+    const div = document.createElement('div');
+    div.className = 'movie-card-simple';
+    div.dataset.id = movie.id;
+    
+    div.innerHTML = `
+        <h3 class="movie-title-simple">${movie.title}</h3>
+        <button class="movie-btn mark-watched">
+            <i class="fas fa-eye"></i> Marcar como Assistido
+        </button>
+    `;
+    
+    // Configurar botão de marcar como assistido
+    const markBtn = div.querySelector('.mark-watched');
+    markBtn.addEventListener('click', () => toggleMovieStatus(movie, 'watched'));
+    
+    return div;
+}
+
+async function addNewMovie() {
+    const title = document.getElementById('movieTitle').value.trim();
+    const type = document.getElementById('movieType').value; // NOVO
+    const category = document.getElementById('movieCategory').value;
+    const poster = document.getElementById('moviePoster').value.trim();
+    
+    if (!title) {
+        alert('Por favor, digite o título.');
+        return;
+    }
+    
+    try {
+        await db.collection('movies').add({
+            title: title,
+            type: type, // NOVO: campo tipo
+            category: category,
+            poster: poster,
+            myRating: 0,
+            herRating: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        showMoviesView();
+        loadMovies(currentMovieCategory);
+        alert(`${type === 'movie' ? 'Filme' : 'Série'} adicionado com sucesso!`);
+        
+    } catch (error) {
+        console.error('Erro ao adicionar:', error);
+        alert('Erro ao adicionar.');
+    }
+}
+
+async function toggleMovieStatus(movie, newCategory) {
+    try {
+        await db.collection('movies').doc(movie.id).update({
+            category: newCategory,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        loadMovies(currentMovieCategory);
+        
+    } catch (error) {
+        console.error('Erro ao alterar status:', error);
+        alert('Erro ao alterar status do filme.');
+    }
+}
+
+async function updateMovieRating(movieId, newRating, raterType) {
+    try {
+        const updateData = {
+            [raterType]: newRating,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        await db.collection('movies').doc(movieId).update(updateData);
+    } catch (error) {
+        console.error('Erro ao atualizar avaliação:', error);
+        alert('Erro ao atualizar avaliação.');
+    }
+}
+
+async function deleteMovie(movieId) {
+    if (!confirm('Tem certeza que deseja excluir este filme?')) return;
+    
+    try {
+        await db.collection('movies').doc(movieId).delete();
+        loadMovies(currentMovieCategory);
+        alert('Filme excluído com sucesso!');
+    } catch (error) {
+        console.error('Erro ao excluir filme:', error);
+        alert('Erro ao excluir filme.');
+    }
+}
+
+// Inicializar quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', initializeMoviesSystem);
